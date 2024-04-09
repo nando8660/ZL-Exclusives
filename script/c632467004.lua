@@ -72,10 +72,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			local e5=Effect.CreateEffect(c)
 			e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 			e5:SetCode(EVENT_LEAVE_FIELD)
-			e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+			e1:SetReset(RESET_PHASE+PHASE_END)
 			e5:SetOperation(s.damop)
 			tc:RegisterEffect(e5)
-			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
 		end
 		local ch=Duel.GetCurrentChain()-1
 		if e:GetLabel()==1 then
