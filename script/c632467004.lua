@@ -74,7 +74,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetCode(EVENT_LEAVE_FIELD)
 			e3:SetOperation(s.damop)
 			e3:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-			tc:RegisterEffect(e2,true)
+			tc:RegisterEffect(e3,true)
 			--tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
 		end
 		local ch=Duel.GetCurrentChain()-1
