@@ -74,7 +74,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetCode(EVENT_LEAVE_FIELD)
 			e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 			e3:SetCondition(s.damcon2)
-			e3:SetTarget(s.damtg2)
 			e3:SetOperation(s.damop2)
 			tc:RegisterEffect(e3)
 		end
@@ -103,22 +102,16 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
---Damage 
+--Damage------------
 function s.damcon2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return (c:IsReason(REASON_BATTLE) or (c:GetReasonPlayer()~=tp and c:IsReason(REASON_EFFECT)))
 		and c:IsPreviousPosition(POS_FACEUP)
 end
-function s.damtg2(e,tp,eg,ep,ev,re,r,rp,chk)
-	Duel.SetTargetPlayer(1-tp)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,800)
-end
 function s.damop2(e,tp,eg,ep,ev,re,r,rp)
-	local gc=Duel.GetMatchingGroupCount(s.damfilter,tp,LOCATION_GRAVE,0,nil)
-	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
-	Duel.Damage(p,800,REASON_EFFECT)
+	Duel.Damage(1-tp,800,REASON_EFFECT)
 end
---Search
+--Search--------------
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return not c:IsPublic() end
