@@ -73,9 +73,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e5:SetType(EFFECT_TYPE_SINGLE)
 			e5:SetCode(EVENT_LEAVE_FIELD)
 			e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-			e5:SetOperation(s.damop)
+			e5:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+			e5:SetOperation(function (e,tp,eg,ep,ev,re,r,rp) Duel.Damage(1-tp,800,REASON_EFFECT) end)
 			tc:RegisterEffect(e5)
-			tc:SetReset(RESET_PHASE+PHASE_END)
 		end
 		local ch=Duel.GetCurrentChain()-1
 		if e:GetLabel()==1 then
@@ -101,10 +101,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			tc:RegisterEffect(e4)
 		end
 	end
-end
---Inflict 800 gamage if leaves the field
-function s.damop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Damage(1-tp,800,REASON_EFFECT)
 end
 --Search
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
