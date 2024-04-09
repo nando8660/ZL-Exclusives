@@ -19,6 +19,7 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetRange(LOCATION_HAND)
 	e3:SetCountLimit(1,id)
+	--e3:SetCondition(s.thcon)
 	e3:SetCost(s.thcost)
 	e3:SetTarget(s.thtg)
 	e3:SetOperation(s.thop)
@@ -51,7 +52,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	for tc in aux.Next(g) do
 		if not tc:IsImmuneToEffect(e) then
-			--Increse ATK
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_UPDATE_ATTACK)
@@ -59,24 +59,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetValue(1000)
 			tc:RegisterEffect(e1)
 			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
-			--Increse DEF
-			local e2=Effect.CreateEffect(c)
-			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_UPDATE_DEFENSE)
-			e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-			e2:SetValue(1000)
-			tc:RegisterEffect(e2)
-			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
-			--Inflict 800 damage when leaves the field
-			local e3=Effect.CreateEffect(c)
-			e3:SetCategory(CATEGORY_DAMAGE)
-			e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-			e3:SetCode(EVENT_LEAVE_FIELD)
-			e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-			e3:SetCondition(s.damcon)
-			e3:SetTarget(s.damtg)
-			e3:SetOperation(s.damop)
-			tc:RegisterEffect(e3)
 		end
 		local ch=Duel.GetCurrentChain()-1
 		if e:GetLabel()==1 then
@@ -103,20 +85,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
---DAMAGE!!!-------
-function s.damcon2(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	return (c:IsReason(REASON_BATTLE) or (c:GetReasonPlayer()~=tp and c:IsReason(REASON_EFFECT)))
-		and c:IsPreviousPosition(POS_FACEUP)
-end
-function s.damtg2(e,tp,eg,ep,ev,re,r,rp,chk)
-	Duel.SetTargetPlayer(1-tp)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,800)
-end
-function s.damop2(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Damage(p,800,REASON_EFFECT)
-end
---[end]-------------
+
 --Search
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
