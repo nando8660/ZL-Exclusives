@@ -69,7 +69,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			tc:RegisterEffect(e2)
 			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
 			--Inflict 800 damage when destroyed
-			local e5=Effect.CreateEffect(c)
+			local e5=Effect.CreateEffect(e:GetHandler())
 			e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 			e5:SetCode(EVENT_LEAVE_FIELD)
 			e5:SetOperation(s.damop)
