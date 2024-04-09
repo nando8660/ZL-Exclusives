@@ -86,7 +86,7 @@ end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local tg=Duel.GetTargetCards(e)
 	if #tg>0 then
-		Duel.SendtoDeck(tg, tp, 1, REASON_EFFECT)
+		Duel.SendtoDeck(tg,nil, 1, REASON_EFFECT)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 		local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
