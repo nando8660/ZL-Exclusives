@@ -65,12 +65,13 @@ end
 
 --Check for SS targets
 function s.spfilter(c,e,tp)
-	return c:IsType(TYPE_MONSTER) and ((c:IsSetCard(0x21D4) or c:IsType(TYPE_GEMINI))) and not e:GetHandler()
+	return c:IsType(TYPE_MONSTER) and ((c:IsSetCard(0x21D4) or c:IsType(TYPE_GEMINI)))
 end
 
 --SS other from hand/GY: cost
 function s.ct2(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():IsDiscardable() end
+	if chk==0 then return e:GetHandler():IsDiscardable() 
+		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,0,e:GetHandler(),tp) end
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST+REASON_DISCARD)
 end
 --SS other from hand/GY: activation legallity
