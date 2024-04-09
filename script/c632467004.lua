@@ -75,7 +75,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 			e3:SetCode(EVENT_LEAVE_FIELD)
 			e3:SetCondition(s.dmgcon)
-			e3:SetTarget(s.dgmtg, 1-tp)
 			e3:SetOperation(s.dmgop)
 			tc:RegisterEffect(e3)
 		end
@@ -109,15 +108,8 @@ function s.dmgcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return rp~=tp and c:IsPreviousLocation(LOCATION_MZONE)
 end
-function s.dmgtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
-	Duel.SetTargetPlayer(tp)
-	Duel.SetTargetParam(5000)
-	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,5000)
-end
 function s.dmgop(e,tp,eg,ep,ev,re,r,rp)
-	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-	Duel.Recover(p,d,REASON_EFFECT)
+	Duel.Damage(1-tp, 800, REASON_EFFECT)
 end
 --[end]-------------
 --Search
