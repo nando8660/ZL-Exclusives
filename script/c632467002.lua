@@ -96,7 +96,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 end
 --Search Filter
 function s.thfilter(c)
-	return c:IsSetCard(0x21d4) and c:IsAbleToHand()
+	return c:IsSetCard(0x21d4) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
 end
 --Normal Summon Filter
 function s.filter(c)
