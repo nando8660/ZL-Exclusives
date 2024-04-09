@@ -53,6 +53,7 @@ function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 	e3:SetTarget(s.splimit)
 	e3:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e3,tp)
+	aux.RegisterClientHint(e:GetHandler(),EFFECT_FLAG_OATH,tp,1,0,aux.Stringid(id,2),nil) 
 end
 
 function s.splimit(e,c)
@@ -84,5 +85,5 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		tc:EnableGeminiStatus()
 	end
 	Duel.SpecialSummonComplete()
-	aux.RegisterClientHint(e:GetHandler(),EFFECT_FLAG_OATH,tp,1,0,aux.Stringid(id,2),nil) 
+	
 end
