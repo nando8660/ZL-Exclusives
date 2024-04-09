@@ -71,7 +71,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			--Inflict 800 damage when destroyed
 			local e3=Effect.CreateEffect(c)
 			e3:SetCategory(CATEGORY_DAMAGE)
-			e3:SetType(EFFECT_TYPE_SINGLE)
+			e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 			e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 			e3:SetCode(EVENT_LEAVE_FIELD)
 			e3:SetCondition(s.dmgcon)
