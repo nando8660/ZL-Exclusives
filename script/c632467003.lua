@@ -65,7 +65,7 @@ end
 
 --Check for SS targets
 function s.spfilter(c,e,tp)
-	return (c:IsSetCard(0x21D4) or c:IsType(TYPE_GEMINI))
+	return c:IsType(TYPE_MONSTER) and (c:IsSetCard(0x21D4) or c:IsType(TYPE_GEMINI)))
 end
 
 --SS other from hand/GY: cost
