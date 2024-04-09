@@ -74,9 +74,11 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 			e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 			e3:SetCode(EVENT_LEAVE_FIELD)
+			e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 			e3:SetCondition(s.dmgcon)
 			e3:SetOperation(s.dmgop)
 			tc:RegisterEffect(e3)
+			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
 		end
 		local ch=Duel.GetCurrentChain()-1
 		if e:GetLabel()==1 then
