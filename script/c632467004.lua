@@ -68,15 +68,15 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetValue(1000)
 			tc:RegisterEffect(e2)
 			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
-			--Inflict 800 damage when destroyed
+			--Inflict 800 damage when leaves the field
 			local e3=Effect.CreateEffect(c)
 			e3:SetCategory(CATEGORY_DAMAGE)
-			e3:SetType(EFFECT_TYPE_SINGLE+EFFECTY_TYPE_CONTINUOUS)
-			e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+			e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 			e3:SetCode(EVENT_LEAVE_FIELD)
-			--e3:SetReset(RESET_PHASE+PHASE_END,1)
-			e3:SetCondition(s.dmgcon)
-			e3:SetOperation(s.dmgop)
+			e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+			e3:SetCondition(s.damcon)
+			e3:SetTarget(s.damtg)
+			e3:SetOperation(s.damop)
 			tc:RegisterEffect(e3)
 		end
 		local ch=Duel.GetCurrentChain()-1
@@ -105,12 +105,18 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --DAMAGE!!!-------
-function s.dmgcon(e,tp,eg,ep,ev,re,r,rp)
+function s.damcon2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:IsPreviousLocation(LOCATION_MZONE)
+	return (c:IsReason(REASON_BATTLE) or (c:GetReasonPlayer()~=tp and c:IsReason(REASON_EFFECT)))
+		and c:IsPreviousPosition(POS_FACEUP)
 end
-function s.dmgop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Damage(1-tp, 800, REASON_EFFECT)
+end
+function s.damtg2(e,tp,eg,ep,ev,re,r,rp,chk)
+	Duel.SetTargetPlayer(1-tp)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,800)
+end
+function s.damop2(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Damage(p,800,REASON_EFFECT)
 end
 --[end]-------------
 --Search
