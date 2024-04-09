@@ -106,7 +106,7 @@ end
 --DAMAGE!!!-------
 function s.dmgcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return rp~=tp and c:IsPreviousLocation(LOCATION_MZONE)
+	return c:IsPreviousLocation(LOCATION_MZONE)
 end
 function s.dmgop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Damage(1-tp, 800, REASON_EFFECT)
