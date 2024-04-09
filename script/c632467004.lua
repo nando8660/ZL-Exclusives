@@ -69,12 +69,11 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			tc:RegisterEffect(e2)
 			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
 			--Inflict 800 damage when destroyed
-			local e5=Effect.CreateEffect(e:GetHandler())
+			local e5=Effect.CreateEffect(c)
 			e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 			e5:SetCode(EVENT_LEAVE_FIELD)
 			e5:SetOperation(s.damop)
-			e5:SetLabelObject(e4)
-			c:RegisterEffect(e5)
+			g:RegisterEffect(e5)
 		end
 		local ch=Duel.GetCurrentChain()-1
 		if e:GetLabel()==1 then
