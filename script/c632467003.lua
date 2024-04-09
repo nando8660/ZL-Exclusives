@@ -91,7 +91,7 @@ end
 
 --Gemini Effect
 function s.filter(c)
-	return c:IsFaceup()	and not c:IsGeminiStatus()
+	return c:IsFaceup() and c:IsType(TYPE_GEMINI) and not c:IsGeminiStatus()
 end
 
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
