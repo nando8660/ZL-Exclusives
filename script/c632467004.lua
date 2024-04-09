@@ -74,8 +74,8 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e5:SetCode(EVENT_LEAVE_FIELD)
 			e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 			e5:SetOperation(s.damop)
-			tc:RegisterEffect(e5)
-			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
+			Duel.RegisterEffect(e5,tp)
+			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1)
 		end
 		local ch=Duel.GetCurrentChain()-1
 		if e:GetLabel()==1 then
