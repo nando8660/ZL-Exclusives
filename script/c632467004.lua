@@ -52,12 +52,21 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	for tc in aux.Next(g) do
 		if not tc:IsImmuneToEffect(e) then
+			--Increse ATK
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_UPDATE_ATTACK+EFFECT_UPDATE_DEFENSE)
+			e1:SetCode(EFFECT_UPDATE_ATTACK)
 			e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 			e1:SetValue(1000)
 			tc:RegisterEffect(e1)
+			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
+			--Increse DEF
+			local e2=Effect.CreateEffect(c)
+			e2:SetType(EFFECT_TYPE_SINGLE)
+			e2:SetCode(EFFECT_UPDATE_DEFENSE)
+			e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+			e2:SetValue(1000)
+			tc:RegisterEffect(e2)
 			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
 			--Inflict 800 damage when destroyed
 			local e2=Effect.CreateEffect(e:GetHandler())
@@ -93,9 +102,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
---Damage leaves the field
+--Inflict 800 gamage if leaves the field
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Damage(c:GetPreviousControler(),800,REASON_EFFECT)
+	Duel.Damage(1-tp,800,REASON_EFFECT)
 end
 --Search
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
