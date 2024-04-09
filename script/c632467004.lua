@@ -73,7 +73,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 			e5:SetCode(EVENT_LEAVE_FIELD)
 			e5:SetOperation(s.damop)
-			g:RegisterEffect(e5)
+			tc:RegisterEffect(e5)
 		end
 		local ch=Duel.GetCurrentChain()-1
 		if e:GetLabel()==1 then
