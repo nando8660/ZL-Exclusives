@@ -75,7 +75,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 			e3:SetCode(EVENT_LEAVE_FIELD)
 			e3:SetCondition(s.dmgcon)
-			e3:SetTarget(s.dgmtg)
+			e3:SetTarget(s.dgmtg, 1-tp)
 			e3:SetOperation(s.dmgop)
 			tc:RegisterEffect(e3)
 		end
