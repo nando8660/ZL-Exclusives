@@ -78,7 +78,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetCondition(s.dmgcon)
 			e3:SetOperation(s.dmgop)
 			tc:RegisterEffect(e3)
-			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
 		end
 		local ch=Duel.GetCurrentChain()-1
 		if e:GetLabel()==1 then
