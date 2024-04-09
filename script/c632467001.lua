@@ -1,4 +1,5 @@
 -- Monster A
+-- Exhothereal Scarecrow
 local s,id=GetID()
 function s.initial_effect(c)
 	Gemini.AddProcedure(c)
@@ -83,4 +84,5 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		tc:EnableGeminiStatus()
 	end
 	Duel.SpecialSummonComplete()
+	aux.RegisterClientHint(e:GetHandler(),EFFECT_FLAG_OATH,tp,1,0,aux.Stringid(id,2),nil) 
 end
