@@ -69,13 +69,15 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			tc:RegisterEffect(e2)
 			tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_EXC_GRAVE+RESET_PHASE+PHASE_END,0,1,fid)
 			--Inflict 800 damage when destroyed
-			local e5=Effect.CreateEffect(c)
-			e5:SetType(EFFECT_TYPE_SINGLE)
-			e5:SetCode(EVENT_LEAVE_FIELD)
-			e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-			e5:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-			e5:SetOperation(function (e,tp,eg,ep,ev,re,r,rp) Duel.Damage(1-tp,800,REASON_EFFECT) end)
-			tc:RegisterEffect(e5)
+			local e3=Effect.CreateEffect(c)
+			e3:SetCategory(CATEGORY_DAMAGE)
+			e3:SetType(EFFECT_TYPE_SINGLE)
+			e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+			e3:SetCode(EVENT_LEAVE_FIELD)
+			e3:SetCondition(s.dmgcon)
+			e3:SetTarget(s.dgmtg)
+			e3:SetOperation(s.dmgop)
+			tc:RegisterEffect(e3)
 		end
 		local ch=Duel.GetCurrentChain()-1
 		if e:GetLabel()==1 then
@@ -102,6 +104,22 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
+--DAMAGE!!!-------
+function s.dmgcon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return rp~=tp and c:IsPreviousLocation(LOCATION_MZONE)
+end
+function s.dmgtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(5000)
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,5000)
+end
+function s.dmgop(e,tp,eg,ep,ev,re,r,rp)
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Recover(p,d,REASON_EFFECT)
+end
+--[end]-------------
 --Search
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
