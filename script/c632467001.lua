@@ -35,7 +35,7 @@ function s.initial_effect(c)
 	e3:SetValue(0)
 	c:RegisterEffect(e3)
 end
-SS
+--SS
 function s.spcon(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0 ands Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
