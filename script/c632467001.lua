@@ -38,7 +38,8 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function s.spcost1(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0 end
+	if chk==0 then return true end
+	return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0 end
 end
 --SS
 function s.spcon(e,c)
