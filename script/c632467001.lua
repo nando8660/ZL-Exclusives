@@ -36,11 +36,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 --SS
-function s.spcon(e,c)
-    if chk==0 then return true end
-    return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0
-	if c==nil then return true end
-	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
+function s.spcon(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0
+		and Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 end
 end
 
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
