@@ -38,7 +38,7 @@ function s.initial_effect(c)
 end
 --SS
 function s.spcon(e,c)
-	if c==0 then return true end
+	if chk==0 then return true end
 	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0
 end
 
