@@ -9,10 +9,12 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_SPSUMMON_PROC)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
 	e1:SetRange(LOCATION_HAND)
+	e2:SetCost(s.spcost1)
 	e1:SetCondition(s.spcon)
 	e1:SetOperation(s.ctop)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
+	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,function(c) return c:IsLocation(LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE) and not c:IsType(TYPE_GEMINI) end)
 	--Return and SS Gemini 4 or 2
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
@@ -34,6 +36,9 @@ function s.initial_effect(c)
 	e3:SetCondition(Gemini.EffectStatusCondition)
 	e3:SetValue(0)
 	c:RegisterEffect(e3)
+end
+function s.spcost1(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0 end
 end
 --SS
 function s.spcon(e,c)
