@@ -1,5 +1,3 @@
-BACKUP
-
 -- Monster A
 -- Exhothereal Scarecrow
 local s,id=GetID()
