@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetOperation(s.ctop)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
-	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,function(c) return not c:IsSummonLocation(LOCATION_EXTRA) or c:IsSetCard(SET_GIMMICK_PUPPET) end)
+	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,function(c) return c:IsLocation(LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE) and not c:IsType(TYPE_GEMINI) end)
 	--Return and SS Gemini 4 or 2
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
