@@ -9,11 +9,11 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_SPSUMMON_PROC)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCost(s.restriction)
 	e1:SetCondition(s.spcon)
 	e1:SetOperation(s.ctop)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
+	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,function(c) return not c:IsSummonLocation(LOCATION_EXTRA) or c:IsSetCard(SET_GIMMICK_PUPPET) end)
 	--Return and SS Gemini 4 or 2
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
@@ -37,14 +37,11 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 --SS
-function s.restriction(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0
+function s.spcon(e,c)
+	if c==nil then return true end
+	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)
 end
-function s.spcon(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
-end
+
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	--Gemini xenophobia
