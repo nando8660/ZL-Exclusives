@@ -39,7 +39,7 @@ end
 --SS
 function s.spcon(e,c)
 	if c==nil then return true end
-	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and Duel.GetCustomActivityCount(id,c:GetControler(),ACTIVITY_SPSUMMON)==1
+	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and Duel.GetCustomActivityCount(id,c:GetControler(),ACTIVITY_SPSUMMON)==0
 end
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
