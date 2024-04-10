@@ -88,5 +88,4 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		tc:EnableGeminiStatus()
 	end
 	Duel.SpecialSummonComplete()
-	
 end
