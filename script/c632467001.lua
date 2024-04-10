@@ -9,7 +9,6 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_SPSUMMON_PROC)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCost(s.spcost1)
 	e1:SetCondition(s.spcon)
 	e1:SetOperation(s.ctop)
 	e1:SetValue(1)
@@ -37,14 +36,11 @@ function s.initial_effect(c)
 	e3:SetValue(0)
 	c:RegisterEffect(e3)
 end
-function s.spcost1(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
-	return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0
-end
 --SS
 function s.spcon(e,c)
 	if c==nil then return true end
 	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
+	return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0
 end
 
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
