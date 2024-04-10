@@ -9,8 +9,7 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_SPSUMMON_PROC)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
 	e1:SetRange(LOCATION_HAND)
-	--e1:SetCondition(s.spcon)
-	e1:SetTarget(s.sptg1)
+	e1:SetCondition(s.spcon)
 	e1:SetOperation(s.ctop)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
@@ -36,12 +35,9 @@ function s.initial_effect(c)
 	e3:SetValue(0)
 	c:RegisterEffect(e3)
 end
---SS
---function s.spcon(e,tp,eg,ep,ev,re,r,rp,chk)
---	if chk==0 then return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0 end
---end
-function s.sptg1(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+SS
+function s.spcon(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0 ands Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
