@@ -1,3 +1,5 @@
+BACKUP
+
 -- Monster A
 -- Exhothereal Scarecrow
 local s,id=GetID()
@@ -13,7 +15,6 @@ function s.initial_effect(c)
 	e1:SetOperation(s.ctop)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
-	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,function(c) return c:IsLocation(LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE) and not c:IsType(TYPE_GEMINI) end)
 	--Return and SS Gemini 4 or 2
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
@@ -38,8 +39,10 @@ function s.initial_effect(c)
 end
 --SS
 function s.spcon(e,c)
-	if chk==0 then return true end
-	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0
+    if chk==0 then return true end
+    return Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0
+	if c==nil then return true end
+	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
 end
 
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
