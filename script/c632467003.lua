@@ -25,18 +25,6 @@ function s.initial_effect(c)
 	e4:SetTarget(s.tg2)
 	e4:SetOperation(s.op2)
 	c:RegisterEffect(e4)
-	--Give Gemini Status
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetCategory(CATEGORY_SUMMON)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e2:SetProperty(EFFECT_FLAG_DELAY)
-	e2:SetCode(EVENT_SUMMON_SUCCESS)
-	e2:SetCountLimit(1, id, EFFECT_COUNT_CODE_OATH)
-	e2:SetCondition(function(e) return c:IsGeminiState() end)
-	e2:SetTarget(s.target)
-	e2:SetOperation(s.operation)
-	c:RegisterEffect(e2)
 	--Set Original ATK to 0
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
@@ -100,26 +88,6 @@ function s.op2(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
-end
-
---Gemini Effect
-function s.filter(c)
-	return c:IsFaceup() and c:IsType(TYPE_GEMINI) and not c:IsGeminiStatus()
-end
-
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
-	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-end
-
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_FACEUP)
-	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,5,nil)
-	local tc=g:GetFirst()
-	for tc in g:Iter() do
-		tc:EnableGeminiStatus()
-	end
-	local c=e:GetHandler()
 end
 
 --Gemini Effect Search
