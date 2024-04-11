@@ -101,6 +101,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 				e4:SetValue(aux.cannotmatfilter(SUMMON_TYPE_FUSION,SUMMON_TYPE_SYNCHRO,SUMMON_TYPE_XYZ,SUMMON_TYPE_LINK))
 				e4:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 				sg:RegisterEffect(e4)
+			end
 		end
 	end
 end
