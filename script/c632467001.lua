@@ -11,7 +11,6 @@ function s.initial_effect(c)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCondition(s.spcon)
 	e1:SetOperation(s.ctop)
-	e1:SetValue(1)
 	c:RegisterEffect(e1)
 	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,function(c) return not c:IsType(TYPE_GEMINI) and c:IsLocation(LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE) end)
 	--Return and SS Gemini 4 or 2
