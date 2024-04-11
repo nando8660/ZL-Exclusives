@@ -122,7 +122,7 @@ end
 
 --Gemini Effect Search
 function s.thfilter(c)
-	return (c:IsCode(632467004) or (c:IsSpellTrap() and c:IsSetCard(0x21d4) and c:IsLocation(LOCATION_GRAVE))) and c:IsAbleToHand())
+	return (c:IsCode(632467004) or (c:IsSpellTrap() and c:IsSetCard(0x21d4) and c:IsLocation(LOCATION_GRAVE)) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil) end
