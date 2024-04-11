@@ -45,6 +45,18 @@ function s.initial_effect(c)
 	e3:SetCondition(Gemini.EffectStatusCondition)
 	e3:SetValue(0)
 	c:RegisterEffect(e3)
+	--Quick Archetype Search
+	local e4=Effect.CreateEffect(c)
+	e4:SetCategory(CATEGORY_SEARCH+CATEGORY_TOHAND)
+	e4:SetType(EFFECT_TYPE_QUICK_O)
+	e4:SetCode(EVENT_FREE_CHAIN)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetHintTiming(0,TIMING_MAIN_END)
+	e4:SetCountLimit(1)
+	e4:SetCondition(function(e) return c:IsGeminiState() end)
+	e4:SetTarget(s.thtg)
+	e4:SetOperation(s.thop)
+	c:RegisterEffect(e4)
 end
 
 --SS from banishment
@@ -105,5 +117,23 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	for tc in g:Iter() do
 		tc:EnableGeminiStatus()
+	end
+end
+
+--Gemini Effect Search
+end
+function s.thfilter(c)
+	return c:IsCode(632467004) or (c:IsSpellTrap() and c:IsSetCard(0x21d4) and c:IsLocation(LOCATION_GRAVE)) and c:IsAbleToHand())
+end
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK+LOCATION_GRAVE)
+end
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil)
+	if #g>0 then
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
 	end
 end
