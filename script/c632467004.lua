@@ -37,7 +37,7 @@ end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil) end
 	local ch=Duel.GetCurrentChain()-1
-	local trig_p,trig_e, trig_l=Duel.GetChainInfo(ch,CHAININFO_TRIGGERING_PLAYER,CHAININFO_TRIGGERING_EFFECT)
+	local trig_p,trig_e=Duel.GetChainInfo(ch,CHAININFO_TRIGGERING_PLAYER,CHAININFO_TRIGGERING_EFFECT)
 	if e:IsHasType(EFFECT_TYPE_ACTIVATE) and ch>0 and trig_p==1-tp and trig_e:IsMonsterEffect() then
 		e:SetLabel(1)
 	else
@@ -78,28 +78,26 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetCondition(s.damcon2)
 			e3:SetOperation(s.damop2)
 			tc:RegisterEffect(e3)
-		end
-		local ch=Duel.GetCurrentChain()-1
-		if e:GetLabel()==1 and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.HasNonZeroAttack),tp,0,LOCATION_MZONE,1,nil) then
-			Duel.BreakEffect()
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-			local sg=Duel.SelectMatchingCard(tp,aux.FaceupFilter(Card.HasNonZeroAttack),tp,0,LOCATION_MZONE,1,1,nil)
-			local tc1=sg:GetFirst()
-			local e4=Effect.CreateEffect(c)
-			e4:SetType(EFFECT_TYPE_SINGLE)
-			e4:SetCode(EFFECT_SET_ATTACK_FINAL)
-			e4:SetValue(0)
-			e4:SetReset(RESET_EVENT+RESETS_STANDARD)
-			tc1:RegisterEffect(e4)
-			local e5=Effect.CreateEffect(c)
-			e5:SetDescription(aux.Stringid(id,1))
-			e5:SetType(EFFECT_TYPE_SINGLE)
-			e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CLIENT_HINT)
-			e5:SetCode(EFFECT_CANNOT_BE_MATERIAL)
-			e5:SetValue(aux.cannotmatfilter(SUMMON_TYPE_FUSION,SUMMON_TYPE_SYNCHRO,SUMMON_TYPE_XYZ,SUMMON_TYPE_LINK))
-			e5:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-			tc1:RegisterEffect(e5)
-		end
+	local ch=Duel.GetCurrentChain()-1
+	if e:GetLabel()==1 and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.HasNonZeroAttack),tp,0,LOCATION_MZONE,1,nil) then
+		Duel.BreakEffect()
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+		local sg=Duel.SelectMatchingCard(tp,aux.FaceupFilter(Card.HasNonZeroAttack),tp,0,LOCATION_MZONE,1,1,nil)
+		local tc1=sg:GetFirst()
+		local e4=Effect.CreateEffect(c)
+		e4:SetType(EFFECT_TYPE_SINGLE)
+		e4:SetCode(EFFECT_SET_ATTACK_FINAL)
+		e4:SetValue(0)
+		e4:SetReset(RESET_EVENT+RESETS_STANDARD)
+		tc1:RegisterEffect(e4)
+		local e5=Effect.CreateEffect(c)
+		e5:SetDescription(aux.Stringid(id,1))
+		e5:SetType(EFFECT_TYPE_SINGLE)
+		e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CLIENT_HINT)
+		e5:SetCode(EFFECT_CANNOT_BE_MATERIAL)
+		e5:SetValue(aux.cannotmatfilter(SUMMON_TYPE_FUSION,SUMMON_TYPE_SYNCHRO,SUMMON_TYPE_XYZ,SUMMON_TYPE_LINK))
+		e5:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+		tc1:RegisterEffect(e5)
 	end
 end
 --Damage------------
