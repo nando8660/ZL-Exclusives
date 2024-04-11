@@ -80,11 +80,10 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			tc:RegisterEffect(e3)
 		end
 		local ch=Duel.GetCurrentChain()-1
-		if e:GetLabel()==1 then
+		if e:GetLabel()==1 and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.HasNonZeroAttack),tp,0,LOCATION_MZONE,1,nil) then
 			Duel.BreakEffect()
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-			local sg=Duel.SelectMatchingCard(tp,aux.FaceupFilter(Card.HasNonZeroAttack),tp,0,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
-			if #sg==0 then return end
+			local sg=Duel.SelectMatchingCard(tp,aux.FaceupFilter(Card.HasNonZeroAttack),tp,0,LOCATION_MZONE,1,1,nil)
 			local tc1=sg:GetFirst()
 			local e4=Effect.CreateEffect(c)
 			e4:SetType(EFFECT_TYPE_SINGLE)
