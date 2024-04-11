@@ -118,6 +118,17 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	for tc in g:Iter() do
 		tc:EnableGeminiStatus()
 	end
+	local c=e:GetHandler()
+	--Can Normal Summon 1 Machine monster in addition to your Normal Summon/Set this turn
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,2))
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
+	e1:SetTargetRange(LOCATION_HAND|LOCATION_MZONE,0)
+	e1:SetTarget(aux.TargetBoolFunction(Card.IsType,TYPE_GEMINI))
+	e1:SetReset(RESET_PHASE|PHASE_END)
+	Duel.RegisterEffect(e1,tp)
+	Auxiliary.RegisterClientHint(c,nil,tp,1,0,aux.Stringid(id,3))
 end
 
 --Gemini Effect Search
