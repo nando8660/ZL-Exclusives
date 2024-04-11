@@ -31,7 +31,7 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.filter(c)
-	return c:IsFaceup() and c:IsNonEffectMonster()
+	return c:IsFaceup() and (c:IsNonEffectMonster() or (c:IsType(TYPE_GEMINI) and not c:IsGeminiState() and not c:IsDisabled()))
 end
 
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
