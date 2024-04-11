@@ -121,7 +121,6 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --Gemini Effect Search
-end
 function s.thfilter(c)
 	return c:IsCode(632467004) or (c:IsSpellTrap() and c:IsSetCard(0x21d4) and c:IsLocation(LOCATION_GRAVE)) and c:IsAbleToHand())
 end
