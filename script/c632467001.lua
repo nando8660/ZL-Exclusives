@@ -12,7 +12,7 @@ function s.initial_effect(c)
 	e1:SetCondition(s.spcon)
 	e1:SetOperation(s.ctop)
 	c:RegisterEffect(e1)
-	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,function(c) return c:IsType(TYPE_GEMINI) and c:IsSummonLocation(LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE) end)
+	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,function(c) return c:IsType(TYPE_GEMINI) and c:IsSummonLocation(LOCATION_EXTRA) end)
 	--Return and SS Gemini 4 or 2
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
