@@ -79,6 +79,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetOperation(s.damop2)
 			tc:RegisterEffect(e3)
 		end
+	end
 	local ch=Duel.GetCurrentChain()-1
 	if e:GetLabel()==1 and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.HasNonZeroAttack),tp,0,LOCATION_MZONE,1,nil) then
 		Duel.BreakEffect()
