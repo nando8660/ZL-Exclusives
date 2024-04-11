@@ -81,7 +81,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		end
 		local ch=Duel.GetCurrentChain()-1
 		if e:GetLabel()==1 then
-			--Duel.BreakEffect()
+			Duel.BreakEffect()
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 			local sg=Duel.GetMatchingGroup(tp,aux.FaceupFilter(Card.HasNonZeroAttack),tp,0,LOCATION_MZONE,nil)
 			if #sg==0 then return end
