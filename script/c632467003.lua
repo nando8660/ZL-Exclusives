@@ -136,6 +136,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end
+	local c=e:GetHandler()
 	--Can Normal Summon 1 Gemini monster in addition to your Normal Summon/Set this turn
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,2))
