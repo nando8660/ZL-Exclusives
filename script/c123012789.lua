@@ -31,7 +31,7 @@ function s.countercon(e, tp, eg, ep, ev, re, r, rp)
     return ep==tp
 end
 function s.addcounter(e,tp,eg,ep,ev,re,r,rp)
-    Duel.Draw(tp, 1, REASON_COST)
+    --Duel.Draw(tp, 1, REASON_COST)
 	Ether=ev+Ether
 	Debug.Message("Registro de LP: "..Ether)
 end
