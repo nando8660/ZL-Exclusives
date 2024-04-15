@@ -69,8 +69,8 @@ function s.addcounter(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.wincon(e,tp,eg,ep,ev,re,r,rp)
-	local flag=Duel.GetFlagEffectLabel(tp,id)
-	return flag and flag>=10000
+	local flag=Duel.GetFlagEffectLabel(tp,107)
+	return flag and flag>=10000 and not Duel.GetLP(tp)>=5000
 end
 
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
@@ -78,7 +78,7 @@ function s.winop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.losecon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetLP(tp)>=14999
+	return Duel.GetLP(tp)>=15000
 end
 
 function s.loseop(e,tp,eg,ep,ev,re,r,rp)
@@ -92,11 +92,11 @@ end
 
 -- operation to reduce the flag value by the amount of effect damage taken
 function s.damageop(e,tp,eg,ep,ev,re,r,rp)
-    local flag=Duel.GetFlagEffectLabel(tp,id)
+    local flag=Duel.GetFlagEffectLabel(tp,107)
     if flag then
         local new_val = flag - ev
         if new_val < 0 then new_val = 0 end -- prevent the flag from going negative
-        Duel.SetFlagEffectLabel(tp,id,new_val)
+        Duel.SetFlagEffectLabel(tp,107,new_val)
     end
-    Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(tp,id))
+    Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(tp,107))
 end
