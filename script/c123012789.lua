@@ -13,7 +13,8 @@ function s.initial_effect(c)
 	e1:SetOperation(s.flipop)
 	c:RegisterEffect(e1)
 end
-
+WIN_REASON_OVERFLOW = 0x3A98
+WIN_REASON_ETHER = 0x2710
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
@@ -75,7 +76,7 @@ function s.wincon(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Win(tp,WIN_REASON_DECK_MASTER)
+	Duel.Win(tp,WIN_REASON_ETHER)
 end
 
 function s.losecon(e,tp,eg,ep,ev,re,r,rp)
@@ -83,7 +84,7 @@ function s.losecon(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.loseop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Win(1-tp,WIN_REASON_DECK_MASTER)
+	Duel.Win(1-tp,WIN_REASON_OVERFLOW)
 end
 
 -- condition to check for effect damage to the player
