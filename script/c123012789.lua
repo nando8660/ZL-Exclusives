@@ -18,8 +18,9 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	--Registra Flags para os Jogadores
+	if Duel.GetFlagEffect(0, 107)== 0 then return true end
 	Duel.RegisterFlagEffect(0,107,0,0,0)
-	Duel.RegisterFlagEffect(1,107,0,0,0) 
+	Duel.RegisterFlagEffect(1,107,0,0,0)
 	-- Cria os efeitos restantes
 	local c=e:GetHandler()
 	local e2=Effect.CreateEffect(c)
