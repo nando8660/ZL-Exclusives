@@ -44,12 +44,13 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e4:SetOperation(s.winop)
 	Duel.RegisterEffect(e4,tp)
 	--Reduzir flag quando recebe dano por efeito
-	local e5=Effect.CreateEffect(c)
-    e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-    e5:SetCode(EVENT_DAMAGE)
-    e5:SetCondition(s.damagecon)
-    e5:SetOperation(s.damageop)
-    Duel.RegisterEffect(e5,tp)
+	-- local e5=Effect.CreateEffect(c)
+ --    	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+ --    	e5:SetCode(EVENT_DAMAGE)
+ --   	e5:SetCondition(s.damagecon)
+ --    	e5:SetOperation(s.damageop)
+ --    	Duel.RegisterEffect(e5,tp)
+	-- Retorna o Registro inicial (Deve retornar 0)
 	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,107))
 end
 
@@ -86,17 +87,17 @@ function s.loseop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 -- condition to check for effect damage to the player
-function s.damagecon(e,tp,eg,ep,ev,re,r,rp)
-    return ep==tp and bit.band(r,REASON_EFFECT)~=0
-end
+-- function s.damagecon(e,tp,eg,ep,ev,re,r,rp)
+--     return ep==tp and bit.band(r,REASON_EFFECT)~=0
+-- end
 
 -- operation to reduce the flag value by the amount of effect damage taken
-function s.damageop(e,tp,eg,ep,ev,re,r,rp)
-    local flag=Duel.GetFlagEffectLabel(tp,107)
-    if flag then
-        local new_val = flag - ev
-        if new_val < 0 then new_val = 0 end -- prevent the flag from going negative
-        Duel.SetFlagEffectLabel(tp,107,new_val)
-    end
-    Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(tp,107))
-end
+-- function s.damageop(e,tp,eg,ep,ev,re,r,rp)
+--     local flag=Duel.GetFlagEffectLabel(tp,107)
+--     if flag then
+--         local new_val = flag - ev
+--         if new_val < 0 then new_val = 0 end -- prevent the flag from going negative
+--         Duel.SetFlagEffectLabel(tp,107,new_val)
+--     end
+--     Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(tp,107))
+-- end
