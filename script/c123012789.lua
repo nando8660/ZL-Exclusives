@@ -15,12 +15,13 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
-	if not Duel.GetFlagEffect(tp, 107)==0 then return true end
-	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
-	Duel.Hint(HINT_CARD,tp,id)
 	--Registra Flags para os Jogadores
+	if not Duel.GetFlagEffect(tp, 107)==0 then return true end
 	Duel.RegisterFlagEffect(0,107,0,0,0)
 	Duel.RegisterFlagEffect(1,107,0,0,0)
+	--Vira a Skill
+	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
+	Duel.Hint(HINT_CARD,tp,id)
 	-- Cria os efeitos restantes
 	local c=e:GetHandler()
 	local e2=Effect.CreateEffect(c)
