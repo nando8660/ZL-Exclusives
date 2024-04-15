@@ -46,7 +46,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_CARD,tp,id)
 	--Registra Flags para os Jogadores
 	Duel.RegisterFlagEffect(tp,107,0,0,0)
-	Cria os efeitos restantes
+	-- Cria os efeitos restantes
 	local c=e:GetHandler()
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
