@@ -17,8 +17,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	-- Ativa a Skill para o Oponente
-	Duel.Hint(HINT_SKILL_FLIP,1-tp,id|(1<<32))
-	Duel.Hint(HINT_CARD,1-tp,id)
+	Debug.AddCard(123012789, 1-tp, 1-tp, LOCATION_PUBLIC, 0, 0)	
 	-- Resto dos efeitos
 	local c=e:GetHandler()
 	local e2=Effect.CreateEffect(c)
@@ -73,7 +72,7 @@ end
 
 function s.wincon(e,tp,eg,ep,ev,re,r,rp)
 	local flag=Duel.GetFlagEffectLabel(tp,107)
-	return flag and flag>=10000 and not Duel.GetLP(tp)>=5000
+	return flag and flag>=10000 and not (Duel.GetLP(tp)>=5000)
 end
 
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
