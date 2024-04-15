@@ -18,7 +18,8 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	--Registra Flags para os Jogadores
-	Duel.RegisterFlagEffect(tp,107,0,0,0)
+	Duel.RegisterFlagEffect(0,107,0,0,0)
+	Duel.RegisterFlagEffect(1,107,0,0,0) 
 	-- Cria os efeitos restantes
 	local c=e:GetHandler()
 	local e2=Effect.CreateEffect(c)
@@ -26,7 +27,8 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetCode(EVENT_RECOVER)
 	e2:SetCondition(s.countercon)
 	e2:SetOperation(s.addcounter)
-	Duel.RegisterEffect(e2,tp)
+	Duel.RegisterEffect(e2,0)
+	Duel.RegisterEffect(e2,1)
 	--lose
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -35,7 +37,8 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e3:SetCountLimit(1)
 	e3:SetCondition(s.losecon)
 	e3:SetOperation(s.loseop)
-	Duel.RegisterEffect(e3,tp)
+	Duel.RegisterEffect(e3,0)
+	Duel.RegisterEffect(e3,1)
 	--win
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -44,7 +47,8 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e4:SetCountLimit(1)
 	e4:SetCondition(s.wincon)
 	e4:SetOperation(s.winop)
-	Duel.RegisterEffect(e4,tp)
+	Duel.RegisterEffect(e4,0)
+	Duel.RegisterEffect(e4,1)
 	--Reduzir flag quando recebe dano por efeito
 	-- local e5=Effect.CreateEffect(c)
  --    	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -57,18 +61,28 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.countercon(e,tp,eg,ep,ev,re,r,rp)
-	return ep==tp
+	return ep==0|1
 end
 
 function s.addcounter(e,tp,eg,ep,ev,re,r,rp)
-	local flag=Duel.GetFlagEffectLabel(tp,107)
-	if not flag then
-		Duel.RegisterFlagEffect(tp,107,RESET_PHASE+PHASE_END,0,1,0)
-		Duel.SetFlagEffectLabel(tp,107,ev)
+	if ep==0 then
+		local flag=Duel.GetFlagEffectLabel(0,107)
+		if not flag then
+			Duel.RegisterFlagEffect(0,107,RESET_PHASE+PHASE_END,0,1,0)
+			Duel.SetFlagEffectLabel(0,107,ev)
+		else
+			Duel.SetFlagEffectLabel(0,107,flag+ev)
+		end
+		Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(0,107).." | jogador "..(0))
 	else
-		Duel.SetFlagEffectLabel(tp,107,flag+ev)
-	end
-	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(tp,107).." | jogador "..(tp))
+		local flag=Duel.GetFlagEffectLabel(1,107)
+		if not flag then
+			Duel.RegisterFlagEffect(1,107,RESET_PHASE+PHASE_END,0,1,0)
+			Duel.SetFlagEffectLabel(1,107,ev)
+		else
+			Duel.SetFlagEffectLabel(1,107,flag+ev)
+		end
+		Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(1,107).." | jogador "..(1))
 end
 
 function s.wincon(e,tp,eg,ep,ev,re,r,rp)
