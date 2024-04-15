@@ -3,6 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableCounterPermit(COUNTER_SPELL)
 	aux.AddSkillProcedure(c,2,false,nil,nil)
+	if not Duel.GetFlagEffect(tp, 107)==0 then return true end
 	local e1=Effect.CreateEffect(c)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -16,7 +17,6 @@ function s.initial_effect(c)
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	--Registra Flags para os Jogadores
-	if not Duel.GetFlagEffect(tp, 107)==0 then return true end
 	Duel.RegisterFlagEffect(tp,107,0,0,0)
 	Duel.RegisterFlagEffect(1-tp,107,0,0,0)
 	--Vira a Skill
