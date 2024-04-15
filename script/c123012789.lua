@@ -83,6 +83,7 @@ function s.addcounter(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SetFlagEffectLabel(1,107,flag+ev)
 		end
 		Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(1,107).." | jogador "..(1))
+	end
 end
 
 function s.wincon(e,tp,eg,ep,ev,re,r,rp)
