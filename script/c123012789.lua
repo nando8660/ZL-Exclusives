@@ -20,7 +20,8 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,1-tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,1-tp,id)	
 	-- Registra a Flag (Contador de Ether)
-	Duel.RegisterFlagEffect(Card.GetControler(c),107,0,0,0)
+	local CP=c:GetControler()
+	Duel.RegisterFlagEffect(CP,107,0,0,0)
 	-- Cria os efeitos restantes
 	local c=e:GetHandler()
 	local e2=Effect.CreateEffect(c)
@@ -28,7 +29,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetCode(EVENT_RECOVER)
 	e2:SetCondition(s.countercon)
 	e2:SetOperation(s.addcounter)
-	Duel.RegisterEffect(e2,Card.GetControler(c))
+	Duel.RegisterEffect(e2,CP)
 	--lose
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -37,7 +38,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e3:SetCountLimit(1)
 	e3:SetCondition(s.losecon)
 	e3:SetOperation(s.loseop)
-	Duel.RegisterEffect(e3,Card.GetControler(c))
+	Duel.RegisterEffect(e3,CP)
 	--win
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -46,62 +47,62 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e4:SetCountLimit(1)
 	e4:SetCondition(s.wincon)
 	e4:SetOperation(s.winop)
-	Duel.RegisterEffect(e4,Card.GetControler(c))
+	Duel.RegisterEffect(e4,CP)
 	--Reduzir flag quando recebe dano por efeito
 	-- local e5=Effect.CreateEffect(c)
  --    	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
  --    	e5:SetCode(EVENT_DAMAGE)
  --   	e5:SetCondition(s.damagecon)
  --    	e5:SetOperation(s.damageop)
- --    	Duel.RegisterEffect(e5,Card.GetControler(c))
+ --    	Duel.RegisterEffect(e5,CP)
 	-- Retorna o Registro inicial (Deve retornar 0)
-	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,107))
+	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(CP,107))
 end
 
 function s.countercon(e,tp,eg,ep,ev,re,r,rp)
-	return ep==Card.GetControler(c)
+	return ep==CP
 end
 
 function s.addcounter(e,tp,eg,ep,ev,re,r,rp)
-	local flag=Duel.GetFlagEffectLabel(Card.GetControler(c),107)
+	local flag=Duel.GetFlagEffectLabel(CP,107)
 	if not flag then
-		Duel.RegisterFlagEffect(Card.GetControler(c),107,RESET_PHASE+PHASE_END,0,1,0)
-		Duel.SetFlagEffectLabel(Card.GetControler(c),107,ev)
+		Duel.RegisterFlagEffect(CP,107,RESET_PHASE+PHASE_END,0,1,0)
+		Duel.SetFlagEffectLabel(CP,107,ev)
 	else
-		Duel.SetFlagEffectLabel(Card.GetControler(c),107,flag+ev)
+		Duel.SetFlagEffectLabel(CP,107,flag+ev)
 	end
-	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(Card.GetControler(c),107))
+	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(CP,107))
 end
 
 function s.wincon(e,tp,eg,ep,ev,re,r,rp)
-	local flag=Duel.GetFlagEffectLabel(Card.GetControler(c),107)
-	return flag and flag>=10000 and not (Duel.GetLP(Card.GetControler(c))>=5000)
+	local flag=Duel.GetFlagEffectLabel(CP,107)
+	return flag and flag>=10000 and not (Duel.GetLP(CP)>=5000)
 end
 
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Win(Card.GetControler(c),0x46)
+	Duel.Win(CP,0x46)
 end
 
 function s.losecon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetLP(Card.GetControler(c))>=15000
+	return Duel.GetLP(CP)>=15000
 end
 
 function s.loseop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Win(1-Card.GetControler(c),0x47)
+	Duel.Win(1-CP,0x47)
 end
 
 -- condition to check for effect damage to the player
 -- function s.damagecon(e,tp,eg,ep,ev,re,r,rp)
---     return ep==tp and bit.band(r,REASON_EFFECT)~=0
+--     return ep==CP and bit.band(r,REASON_EFFECT)~=0
 -- end
 
 -- operation to reduce the flag value by the amount of effect damage taken
 -- function s.damageop(e,tp,eg,ep,ev,re,r,rp)
---     local flag=Duel.GetFlagEffectLabel(tp,107)
+--     local flag=Duel.GetFlagEffectLabel(CP,107)
 --     if flag then
 --         local new_val = flag - ev
 --         if new_val < 0 then new_val = 0 end -- prevent the flag from going negative
---         Duel.SetFlagEffectLabel(tp,107,new_val)
+--         Duel.SetFlagEffectLabel(CP,107,new_val)
 --     end
---     Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(tp,107))
+--     Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(CP,107))
 -- end
