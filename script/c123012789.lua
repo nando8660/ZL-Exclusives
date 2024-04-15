@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableCounterPermit(COUNTER_SPELL)
 	aux.AddSkillProcedure(c,2,false,nil,nil)
-	if not Duel.GetFlagEffect(tp, 107)==0 then return true end
+	if not Duel.GetFlagEffect(0|1, 107)==0 then return true end
 	local e1=Effect.CreateEffect(c)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
