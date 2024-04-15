@@ -74,7 +74,7 @@ function s.wincon(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Win(tp,0x6B)
+	Duel.Win(tp,0x46)
 end
 
 function s.losecon(e,tp,eg,ep,ev,re,r,rp)
@@ -82,7 +82,7 @@ function s.losecon(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.loseop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Win(1-tp,0x6C)
+	Duel.Win(1-tp,0x47)
 end
 
 -- condition to check for effect damage to the player
