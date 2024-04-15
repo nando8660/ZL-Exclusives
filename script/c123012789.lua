@@ -16,7 +16,7 @@ function s.initial_effect(c)
 	--Testagem
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_DRAW)
-	e2:SetType(EEFFECT_TYPE_TRIGGER_F)
+	e2:SetType(EEFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e2:SetCondition(s.condition)
