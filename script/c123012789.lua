@@ -13,8 +13,8 @@ function s.initial_effect(c)
 	e1:SetOperation(s.flipop)
 	c:RegisterEffect(e1)
 end
-WIN_REASON_OVERFLOW = 0x3A98
-WIN_REASON_ETHER = 0x2710
+WIN_REASON_ETHER = 0x6B
+WIN_REASON_OVERFLOW = 0x6C
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
