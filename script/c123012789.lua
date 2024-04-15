@@ -56,7 +56,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
  --    	e5:SetOperation(s.damageop)
  --    	Duel.RegisterEffect(e5,tp)
 	-- Retorna o Registro inicial (Deve retornar 0)
-	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,107))
+	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,107).." Referente a: "tp)
 end
 
 function s.countercon(e,tp,eg,ep,ev,re,r,rp)
@@ -71,7 +71,7 @@ function s.addcounter(e,tp,eg,ep,ev,re,r,rp)
 	else
 		Duel.SetFlagEffectLabel(tp,107,flag+ev)
 	end
-	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(tp,107))
+	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(tp,107).." Referente a: "tp)
 end
 
 function s.wincon(e,tp,eg,ep,ev,re,r,rp)
@@ -104,5 +104,5 @@ end
 --         if new_val < 0 then new_val = 0 end -- prevent the flag from going negative
 --         Duel.SetFlagEffectLabel(tp,107,new_val)
 --     end
---     Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(tp,107))
+--     Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(tp,107).." Referente a: "tp)
 -- end
