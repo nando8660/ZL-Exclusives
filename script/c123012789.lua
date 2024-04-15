@@ -17,9 +17,11 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	-- Ativa a Skill para o Oponente
-	Debug.AddCard(123012789, 1-tp, 1-tp, LOCATION_PUBLIC, 0, 0)	
-	-- Resto dos efeitos
+	Duel.Hint(HINT_SKILL_FLIP,1-tp,id|(1<<32))
+	Duel.Hint(HINT_CARD,1-tp,id)	
+	-- Registra a Flag (Contador de Ether)
 	Duel.RegisterFlagEffect(tp,107,0,0,0)
+	-- Cria os efeitos restantes
 	local c=e:GetHandler()
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
