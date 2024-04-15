@@ -28,7 +28,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetCode(EVENT_RECOVER)
 	e2:SetCondition(s.countercon)
 	e2:SetOperation(s.addcounter)
-	Duel.RegisterEffect(e2,tp)
+	Duel.RegisterEffect(e2,Card.GetControler(c))
 	--lose
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
