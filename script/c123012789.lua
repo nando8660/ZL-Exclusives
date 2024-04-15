@@ -50,7 +50,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
     e5:SetCondition(s.damagecon)
     e5:SetOperation(s.damageop)
     Duel.RegisterEffect(e5,tp)
-	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,id))
+	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,107))
 end
 
 function s.countercon(e,tp,eg,ep,ev,re,r,rp)
@@ -58,14 +58,14 @@ function s.countercon(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.addcounter(e,tp,eg,ep,ev,re,r,rp)
-	local flag=Duel.GetFlagEffectLabel(tp,id)
+	local flag=Duel.GetFlagEffectLabel(tp,107)
 	if not flag then
-		Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1,0)
-		Duel.SetFlagEffectLabel(tp,id,ev)
+		Duel.RegisterFlagEffect(tp,107,RESET_PHASE+PHASE_END,0,1,0)
+		Duel.SetFlagEffectLabel(tp,107,ev)
 	else
-		Duel.SetFlagEffectLabel(tp,id,flag+ev)
+		Duel.SetFlagEffectLabel(tp,107,flag+ev)
 	end
-	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(tp,id))
+	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(tp,107))
 end
 
 function s.wincon(e,tp,eg,ep,ev,re,r,rp)
