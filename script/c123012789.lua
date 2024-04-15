@@ -20,7 +20,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SKILL_FLIP,1-tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,1-tp,id)	
 	-- Registra a Flag (Contador de Ether)
-	Duel.RegisterFlagEffect(tp,107,0,0,0)
+	Duel.RegisterFlagEffect(Card.GetControler(c),107,0,0,0)
 	-- Cria os efeitos restantes
 	local c=e:GetHandler()
 	local e2=Effect.CreateEffect(c)
@@ -37,7 +37,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e3:SetCountLimit(1)
 	e3:SetCondition(s.losecon)
 	e3:SetOperation(s.loseop)
-	Duel.RegisterEffect(e3,tp)
+	Duel.RegisterEffect(e3,Card.GetControler(c))
 	--win
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -46,48 +46,48 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e4:SetCountLimit(1)
 	e4:SetCondition(s.wincon)
 	e4:SetOperation(s.winop)
-	Duel.RegisterEffect(e4,tp)
+	Duel.RegisterEffect(e4,Card.GetControler(c))
 	--Reduzir flag quando recebe dano por efeito
 	-- local e5=Effect.CreateEffect(c)
  --    	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
  --    	e5:SetCode(EVENT_DAMAGE)
  --   	e5:SetCondition(s.damagecon)
  --    	e5:SetOperation(s.damageop)
- --    	Duel.RegisterEffect(e5,tp)
+ --    	Duel.RegisterEffect(e5,Card.GetControler(c))
 	-- Retorna o Registro inicial (Deve retornar 0)
 	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,107))
 end
 
 function s.countercon(e,tp,eg,ep,ev,re,r,rp)
-	return ep==tp
+	return ep==Card.GetControler(c)
 end
 
 function s.addcounter(e,tp,eg,ep,ev,re,r,rp)
-	local flag=Duel.GetFlagEffectLabel(tp,107)
+	local flag=Duel.GetFlagEffectLabel(Card.GetControler(c),107)
 	if not flag then
-		Duel.RegisterFlagEffect(tp,107,RESET_PHASE+PHASE_END,0,1,0)
-		Duel.SetFlagEffectLabel(tp,107,ev)
+		Duel.RegisterFlagEffect(Card.GetControler(c),107,RESET_PHASE+PHASE_END,0,1,0)
+		Duel.SetFlagEffectLabel(Card.GetControler(c),107,ev)
 	else
-		Duel.SetFlagEffectLabel(tp,107,flag+ev)
+		Duel.SetFlagEffectLabel(Card.GetControler(c),107,flag+ev)
 	end
-	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(tp,107))
+	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(Card.GetControler(c),107))
 end
 
 function s.wincon(e,tp,eg,ep,ev,re,r,rp)
-	local flag=Duel.GetFlagEffectLabel(tp,107)
-	return flag and flag>=10000 and not (Duel.GetLP(tp)>=5000)
+	local flag=Duel.GetFlagEffectLabel(Card.GetControler(c),107)
+	return flag and flag>=10000 and not (Duel.GetLP(Card.GetControler(c))>=5000)
 end
 
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Win(tp,0x46)
+	Duel.Win(Card.GetControler(c),0x46)
 end
 
 function s.losecon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetLP(tp)>=15000
+	return Duel.GetLP(Card.GetControler(c))>=15000
 end
 
 function s.loseop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Win(1-tp,0x47)
+	Duel.Win(1-Card.GetControler(c),0x47)
 end
 
 -- condition to check for effect damage to the player
