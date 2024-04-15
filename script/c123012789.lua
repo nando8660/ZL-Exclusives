@@ -56,9 +56,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
  --    	e5:SetOperation(s.damageop)
  --    	Duel.RegisterEffect(e5,tp)
 	-- Retorna o Registro inicial (Deve retornar 0)
-	local 0 = Você
-	local 1 = Oponente
-	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,107).." - tp: "..(tp))
+	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,107).." - tp: "..(tp:name))
 end
 
 function s.countercon(e,tp,eg,ep,ev,re,r,rp)
