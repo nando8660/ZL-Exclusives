@@ -3,7 +3,6 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableCounterPermit(COUNTER_SPELL)
 	aux.AddSkillProcedure(c,2,false,nil,nil)
-	if not Duel.GetFlagEffect(0|1, 107)==0 then return true end
 	local e1=Effect.CreateEffect(c)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -16,12 +15,10 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
-	--Registra Flags para os Jogadores
-	Duel.RegisterFlagEffect(tp,107,0,0,0)
-	Duel.RegisterFlagEffect(1-tp,107,0,0,0)
-	--Vira a Skill
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
+	--Registra Flag para o tp
+	Duel.RegisterFlagEffect(tp,107,0,0,0)
 	-- Cria os efeitos restantes
 	local c=e:GetHandler()
 	local e2=Effect.CreateEffect(c)
@@ -60,29 +57,18 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.countercon(e,tp,eg,ep,ev,re,r,rp)
-	return ep==0|1
+	return ep==tp
 end
 
 function s.addcounter(e,tp,eg,ep,ev,re,r,rp)
-	if ep==0 then
-		local flag=Duel.GetFlagEffectLabel(0,107)
-		if not flag then
-			Duel.RegisterFlagEffect(0,107,RESET_PHASE+PHASE_END,0,1,0)
-			Duel.SetFlagEffectLabel(0,107,ev)
-		else
-			Duel.SetFlagEffectLabel(0,107,flag+ev)
-		end
-		Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(0,107).." | jogador "..(0))
+	local flag=Duel.GetFlagEffectLabel(tp,107)
+	if not flag then
+		Duel.RegisterFlagEffect(tp,107,RESET_PHASE+PHASE_END,0,1,0)
+		Duel.SetFlagEffectLabel(tp,107,ev)
 	else
-		local flag=Duel.GetFlagEffectLabel(1,107)
-		if not flag then
-			Duel.RegisterFlagEffect(1,107,RESET_PHASE+PHASE_END,0,1,0)
-			Duel.SetFlagEffectLabel(1,107,ev)
-		else
-			Duel.SetFlagEffectLabel(1,107,flag+ev)
-		end
-		Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(1,107).." | jogador "..(1))
+		Duel.SetFlagEffectLabel(tp,107,flag+ev)
 	end
+	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(tp,107).." | jogador "..(tp))
 end
 
 function s.wincon(e,tp,eg,ep,ev,re,r,rp)
