@@ -15,7 +15,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetFlagEffect(tp, 107)>=0 then return true end
+	if not Duel.GetFlagEffect(tp, 107)==0 then return true end
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
 	--Registra Flags para os Jogadores
