@@ -17,8 +17,8 @@ end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	--Registra Flags para os Jogadores
 	if not Duel.GetFlagEffect(tp, 107)==0 then return true end
-	Duel.RegisterFlagEffect(0,107,0,0,0)
-	Duel.RegisterFlagEffect(1,107,0,0,0)
+	Duel.RegisterFlagEffect(tp,107,0,0,0)
+	Duel.RegisterFlagEffect(1-tp,107,0,0,0)
 	--Vira a Skill
 	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
 	Duel.Hint(HINT_CARD,tp,id)
@@ -29,7 +29,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetCode(EVENT_RECOVER)
 	e2:SetCondition(s.countercon)
 	e2:SetOperation(s.addcounter)
-	Duel.RegisterEffect(e2,0)
+	Duel.RegisterEffect(e2,tp)
 	--lose
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -38,7 +38,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e3:SetCountLimit(1)
 	e3:SetCondition(s.losecon)
 	e3:SetOperation(s.loseop)
-	Duel.RegisterEffect(e3,0)
+	Duel.RegisterEffect(e3,tp)
 	--win
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -47,7 +47,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e4:SetCountLimit(1)
 	e4:SetCondition(s.wincon)
 	e4:SetOperation(s.winop)
-	Duel.RegisterEffect(e4,0)
+	Duel.RegisterEffect(e4,tp)
 	--Reduzir flag quando recebe dano por efeito
 	-- local e5=Effect.CreateEffect(c)
  --    	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
