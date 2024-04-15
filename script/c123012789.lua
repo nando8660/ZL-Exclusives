@@ -24,7 +24,6 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,107,0,0,0)
 	-- Cria os efeitos restantes
 	local c=e:GetHandler()
-	local tp=e:GetHandler():GetController()
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e2:SetCode(EVENT_RECOVER)
