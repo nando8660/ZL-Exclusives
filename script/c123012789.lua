@@ -1,4 +1,3 @@
---Ether Counter
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableCounterPermit(COUNTER_SPELL)
@@ -45,12 +44,12 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e4:SetOperation(s.winop)
 	Duel.RegisterEffect(e4,tp)
 	--Reduzir flag quando recebe dano por efeito
-	-- local e5=Effect.CreateEffect(c)
-    -- e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-    -- e5:SetCode(EVENT_DAMAGE)
-    -- e5:SetCondition(s.damagecon)
-    -- e5:SetOperation(s.damageop)
-    -- Duel.RegisterEffect(e5,tp)
+	local e5=Effect.CreateEffect(c)
+    e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+    e5:SetCode(EVENT_DAMAGE)
+    e5:SetCondition(s.damagecon)
+    e5:SetOperation(s.damageop)
+    Duel.RegisterEffect(e5,tp)
 	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,id))
 end
 
@@ -71,7 +70,7 @@ end
 
 function s.wincon(e,tp,eg,ep,ev,re,r,rp)
 	local flag=Duel.GetFlagEffectLabel(tp,id)
-	return flag and flag>=10000 and not Duel.GetLP(tp)>=5000
+	return flag and flag>=10000
 end
 
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
@@ -79,7 +78,7 @@ function s.winop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.losecon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetLP(tp)>=15000
+	return Duel.GetLP(tp)>=14999
 end
 
 function s.loseop(e,tp,eg,ep,ev,re,r,rp)
@@ -92,12 +91,12 @@ function s.damagecon(e,tp,eg,ep,ev,re,r,rp)
 end
 
 -- operation to reduce the flag value by the amount of effect damage taken
--- function s.damageop(e,tp,eg,ep,ev,re,r,rp)
---     local flag=Duel.GetFlagEffectLabel(tp,id)
---     if flag then
---         local new_val = flag - ev
---         if new_val < 0 then new_val = 0 end -- prevent the flag from going negative
---         Duel.SetFlagEffectLabel(tp,id,new_val)
---     end
---     Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(tp,id))
--- end
+function s.damageop(e,tp,eg,ep,ev,re,r,rp)
+    local flag=Duel.GetFlagEffectLabel(tp,id)
+    if flag then
+        local new_val = flag - ev
+        if new_val < 0 then new_val = 0 end -- prevent the flag from going negative
+        Duel.SetFlagEffectLabel(tp,id,new_val)
+    end
+    Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(tp,id))
+end
