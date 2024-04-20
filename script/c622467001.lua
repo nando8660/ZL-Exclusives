@@ -13,33 +13,33 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE+EFFECT_TYPE_FIELD)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e1:SetCode(EVENT_FREE_CHAIN)
-    e1:SetRange(LOCATION_DECK+LOCATION_HAND)
-	e1:SetCondition(condition)
-	e1:SetTarget(target)
-	e1:SetOperation(operation)
+	e1:SetRange(LOCATION_DECK+LOCATION_HAND)
+	e1:SetCondition(s.condition)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
 end
-function condition(e, tp, eg, ep, ev, re, r, rp)
+function s.condition(e, tp, eg, ep, ev, re, r, rp)
     return not (Duel.GetTurnPlayer()==tp) and (Duel.GetTurnCount()==1 or (not Duel.GetFlagEffect(tp, 109)==0))
-        and Duel.GetMatchingGroupCount(filter1, tp, 0, LOCATION_HAND, nil)>0 and Duel.GetCurrentChain(true)>0
+        and Duel.GetMatchingGroupCount(s.filter1, tp, 0, LOCATION_HAND, nil)>0 and Duel.GetCurrentChain(true)>0
 end
-function filter1(c)
+function s.filter1(c)
     return c:IsAbleToDeck()
 end
-function target(e, tp, eg, ep, ev, re, r, rp, chk)
-    return (Duel.GetMatchingGroup(filter1, tp, 0, LOCATION_HAND, nil)) or (Duel.GetMatchingGroup(filter2, tp, 0, LOCATION_HAND, nil))
+function s.target(e, tp, eg, ep, ev, re, r, rp, chk)
+    return (Duel.GetMatchingGroup(s.filter1, tp, 0, LOCATION_HAND, nil)) or (Duel.GetMatchingGroup(s.filter2, tp, 0, LOCATION_HAND, nil))
 end
-function filter2(c, e, tp)
+function s.filter2(c, e, tp)
     return c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e, SUMMON_TYPE_SPECIAL, 1-tp, false, false)
 end
-function operation(e, tp, eg, ep, ev, re, r, rp)
+function s.operation(e, tp, eg, ep, ev, re, r, rp)
     local c=e:GetHandler()
     if c:IsPreviousLocation(LOCATION_DECK) then
         Duel.ShuffleDeck(tp)
     else
         Duel.Draw(tp, 1, REASON_EFFECT)
     end
-    local gm = Duel.GetMatchingGroup(filter2, 1-tp, LOCATION_HAND, 0, nil, e, 1-tp)
+    local gm = Duel.GetMatchingGroup(s.filter2, 1-tp, LOCATION_HAND, 0, nil, e, 1-tp)
     if #gm==0 or Duel.GetFieldGroupCount(tp, LOCATION_MZONE, 0)==5 or not Duel.IsPlayerCanSpecialSummon(1-tp) then
         local gh = Duel.GetFieldGroup(tp, 0, LOCATION_HAND)
         Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_TODECK)
