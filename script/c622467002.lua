@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_TRAP_ACT_IN_HAND)
 	c:RegisterEffect(e1)
-    	--Set "Localized Tornado"
+	--Set "Localized Tornado"
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_DRAW)
 	e1:SetType(EFFECT_TYPE_ACTIVATE+EFFECT_TYPE_FIELD)
@@ -37,16 +37,16 @@ function s.operation(e, tp, eg, ep, ev, re, r, rp)
     else
         Duel.Draw(tp, 1, REASON_EFFECT)
     end
-    local lt = Duel.SelectMatchingCard(tp, s.filter, tp, LOCATION_HAND+LOCATION_DECK, 0, 1, 1, e, tp):GetFirst()
+    local lt = Duel.SelectMatchingCard(tp, s.filter, tp, LOCATION_HAND+LOCATION_DECK, 0, 1, 1, e, tp)
     if Duel.SSet(1-tp, lt) then
-		lt:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1)
+		lt:GetFirst():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1)
 		-- local c=lt:GetFirst()
 		-- The set card can be activated this turn
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetDescription(aux.Stringid(id,1))
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
-		e1:SetCode(EFFECT_QP_ACT_IN_SET_TURN)
+		e1:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
 		e1:SetReset(RESET_EVENT|RESETS_STANDARD)
 		lt:RegisterEffect(e1)
 		--Cannot activate cards or effects
