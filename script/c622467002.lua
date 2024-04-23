@@ -18,7 +18,7 @@ function s.initial_effect(c)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
 	--Count Activations
-	Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,function(re) return not (re:IsMonsterEffect() or re:IsActivated()) end)
+	Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,function(re) return not (re:IsMonsterEffect() or re:IsHasType(EFFECT_TYPE_ACTIVATE)) end)
 end
 function s.condition(e, tp, eg, ep, ev, re, r, rp)
 	local c=e:GetHandler()
