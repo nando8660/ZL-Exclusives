@@ -41,6 +41,14 @@ function s.operation(e, tp, eg, ep, ev, re, r, rp)
     if Duel.SSet(1-tp, lt) then
 		lt:GetFirst():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1)
 		local c=lt:GetFirst()
+		-- The set card can be activated this turn
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetDescription(aux.Stringid(id,1))
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
+		e1:SetCode(EFFECT_QP_ACT_IN_SET_TURN)
+		e1:SetReset(RESET_EVENT|RESETS_STANDARD)
+		c:RegisterEffect(e1)
 		--Cannot activate cards or effects
 		local e3=Effect.CreateEffect(c)
 		e3:SetType(EFFECT_TYPE_FIELD)
