@@ -20,7 +20,8 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.condition(e, tp, eg, ep, ev, re, r, rp)
-    return not (Duel.GetTurnPlayer()==tp) and (Duel.GetTurnCount()==1 or (not Duel.GetFlagEffect(tp, 109)==0))
+    local c=e:GetHandler()
+    return not (Duel.GetTurnPlayer()==tp) and (Duel.GetTurnCount()==1 or (not Duel.GetFlagEffect(tp, 109)==0) or c:IsLocation(LOCATION_SZONE))
         and Duel.GetMatchingGroupCount(s.filter1, tp, 0, LOCATION_HAND, nil)>0 and Duel.GetCurrentChain(true)>0
 end
 function s.filter1(c)
