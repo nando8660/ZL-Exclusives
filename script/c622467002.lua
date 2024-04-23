@@ -48,7 +48,7 @@ function s.operation(e, tp, eg, ep, ev, re, r, rp)
 		e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 		e1:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
 		e1:SetReset(RESET_EVENT|RESETS_STANDARD)
-		lt:RegisterEffect(e1)
+		lt:GetFirst():RegisterEffect(e1)
 		--Cannot activate cards or effects
 		local e3=Effect.CreateEffect(c)
 		e3:SetType(EFFECT_TYPE_FIELD)
