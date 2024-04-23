@@ -21,7 +21,7 @@ function s.initial_effect(c)
 	Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,function(re) return not (re:IsMonsterEffect() or re:IsActivated()) end)
 end
 function s.condition(e, tp, eg, ep, ev, re, r, rp)
-    return not (Duel.GetTurnPlayer()==tp) and (Duel.GetTurnCount()==1 or (not Duel.GetFlagEffect(tp, 109)==0) or c:IsFaceDown())
+    return not (Duel.GetTurnPlayer()==tp) and (Duel.GetTurnCount()==1 or (not Duel.GetFlagEffect(tp, 109)==0) or e:GetHandler():IsFaceDown())
 	and Duel.GetCustomActivityCount(id,1-tp,ACTIVITY_CHAIN)>4
 end
 function s.filter(c, e, tp)
