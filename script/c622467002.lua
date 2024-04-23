@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_TRAP_ACT_IN_HAND)
 	c:RegisterEffect(e1)
-    --Set "Localized Tornado"
+    	--Set "Localized Tornado"
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_DRAW)
 	e1:SetType(EFFECT_TYPE_ACTIVATE+EFFECT_TYPE_FIELD)
@@ -17,9 +17,12 @@ function s.initial_effect(c)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
+	--Count Activations
+	Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,function(re) return not (re:IsMonsterEffect() or re:IsActivated()) end)
 end
 function s.condition(e, tp, eg, ep, ev, re, r, rp)
     return not (Duel.GetTurnPlayer()==tp) and (Duel.GetTurnCount()==1 or (not Duel.GetFlagEffect(tp, 109)==0))
+	and return Duel.GetCustomActivityCount(id,1-tp,ACTIVITY_CHAIN)>4
 end
 function s.filter(c, e, tp)
     return c:IsCode(64681263)
@@ -43,7 +46,7 @@ function s.operation(e, tp, eg, ep, ev, re, r, rp)
 		e3:SetType(EFFECT_TYPE_FIELD)
 		e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 		e3:SetCode(EFFECT_CANNOT_ACTIVATE)
-		e3:SetTargetRange(0,1)
+		e3:SetTargetRange(1,1)
 		e3:SetCondition(s.limcon)
 		e3:SetValue(s.limtg)
 		Duel.RegisterEffect(e3,tp)
