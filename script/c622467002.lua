@@ -46,7 +46,7 @@ function s.operation(e, tp, eg, ep, ev, re, r, rp)
 		e3:SetType(EFFECT_TYPE_FIELD)
 		e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 		e3:SetCode(EFFECT_CANNOT_ACTIVATE)
-		e3:SetTargetRange(1,1)
+		e3:SetTargetRange(0,1)
 		e3:SetCondition(s.limcon)
 		e3:SetValue(s.limtg)
 		Duel.RegisterEffect(e3,tp)
@@ -54,7 +54,7 @@ function s.operation(e, tp, eg, ep, ev, re, r, rp)
 	end
 end
 function s.limcon(e, tp, eg, ep, ev, re, r, rp)
-	return Duel.IsTurnPlayer(e:GetHandlerPlayer()) and Duel.IsExistingMatchingCard(s.filter2, e:GetHandlerPlayer(), 0, LOCATION_SZONE, 1, nil)
+	return Duel.IsExistingMatchingCard(s.filter2, e:GetHandlerPlayer(), 0, LOCATION_SZONE, 1, nil) --and Duel.IsTurnPlayer(e:GetHandlerPlayer())
 end
 function s.limtg(e,re,tp)
 	return not (re:GetHandler():IsCode(64681263) and re:GetHandler():GetFlagEffect(id)~=0)
