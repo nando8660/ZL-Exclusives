@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE+EFFECT_TYPE_FIELD)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetRange(LOCATION_DECK+LOCATION_HAND)
+	e1:SetRange(LOCATION_DECK+LOCATION_HAND+LOCATION_SZONE)
 	e1:SetCondition(s.condition)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
@@ -21,7 +21,7 @@ function s.initial_effect(c)
 end
 function s.condition(e, tp, eg, ep, ev, re, r, rp)
     local c=e:GetHandler()
-    return not (Duel.GetTurnPlayer()==tp) and (Duel.GetTurnCount()==1 or (not Duel.GetFlagEffect(tp, 109)==0) or c:IsLocation(LOCATION_SZONE))
+    return not (Duel.GetTurnPlayer()==tp) and (Duel.GetTurnCount()==1 or (not Duel.GetFlagEffect(tp, 109)==0) or c:IsPosition(POS_FACEDOWN))
         and Duel.GetMatchingGroupCount(s.filter1, tp, 0, LOCATION_HAND, nil)>0 and Duel.GetCurrentChain(true)>0
 end
 function s.filter1(c)
