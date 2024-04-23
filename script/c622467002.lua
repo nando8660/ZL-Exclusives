@@ -37,9 +37,9 @@ function s.operation(e, tp, eg, ep, ev, re, r, rp)
     else
         Duel.Draw(tp, 1, REASON_EFFECT)
     end
-    local lt = Duel.SelectMatchingCard(tp, s.filter, tp, LOCATION_HAND+LOCATION_DECK, 0, 1, 1, e, tp)
+    local lt = Duel.SelectMatchingCard(tp, s.filter, tp, LOCATION_HAND+LOCATION_DECK, 0, 1, 1, e, tp):GetFirst()
     if Duel.SSet(1-tp, lt) then
-		lt:GetFirst():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1)
+		lt:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1)
 		-- local c=lt:GetFirst()
 		-- The set card can be activated this turn
 		local e1=Effect.CreateEffect(e:GetHandler())
