@@ -36,13 +36,13 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) then 
 		Duel.Destroy(tc,REASON_EFFECT)
-		local dg=Duel.GetMatchingGroup(nil,tp,0,LOCATION_MZONE,nil)
-		if #dg>0 and  Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
-			Duel.BreakEffect()
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-			local sg=dg:Select(tp,1,1,nil)
-			Duel.HintSelection(sg)
-			Duel.Destroy(sg,REASON_EFFECT)
-		end
+	end
+	local dg=Duel.GetMatchingGroup(nil,tp,0,LOCATION_MZONE,nil)
+	if #dg>0 and  Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
+		Duel.BreakEffect()
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+		local sg=dg:Select(tp,1,1,nil)
+		Duel.HintSelection(sg)
+		Duel.Destroy(sg,REASON_EFFECT)
 	end
 end
