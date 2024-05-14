@@ -32,19 +32,19 @@ function s.desfilter(c, e, tp)
     local h_seq = e:GetHandler():GetSequence()
     local c_seq = c:GetSequence()
     local same_controller = c:GetControler()==e:GetHandler():GetControler()
-    local horizontal_adj = c_seq == h_seq+1 or c_seq == h_seq-1
+    local horizontal_adj = (c_seq == h_seq+1 or c_seq == h_seq-1) and c:GetLocation()==e:GetHandler():GetLocation()
     local same_sequence = c_seq == h_seq
     local special_cases = false
     if h_seq == 1 then
-        special_cases = c_seq == 5
+        special_cases = (c_seq == 5 and same_controller) or (c_seq==6 and not same_controller)
     elseif h_seq == 3 then
-        special_cases = c_seq == 6
+        special_cases = (c_seq == 6 and same_controller) or (c_seq==5 and not same_controller)
     elseif h_seq == 5 then
         special_cases = c_seq == 1
     elseif h_seq == 6 then
         special_cases = c_seq == 3
     end
-    return (horizontal_adj and same_controller) or (same_sequence and same_controller) or special_cases
+    return (horizontal_adj and same_controller) or (same_sequence and same_controller) or (special_cases and c:IsLocation(LOCATION_MZONE))
 end
 function s.filter1(c, e)
     return c:IsType(TYPE_MONSTER)
