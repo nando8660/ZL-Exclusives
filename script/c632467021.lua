@@ -32,8 +32,7 @@ function s.desfilter(c, e, tp)
     if e:GetHandler():IsLocation(LOCATION_EMZONE) then
         return c:GetSequence()<5 and c:GetSequence()==e:GetHandler():GetSequence() and c:IsLocation(LOCATION_MZONE)
     elseif e:GetHandler():IsLocation(LOCATION_MZONE) and e:GetHandler():GetSequence()<5 then
-        return c:GetSequence()==e:GetHandler():GetSequence() and (c:GetSequence()>=5 or (c:GetSequence()<5 
-		and c:GetControler()==e:GetHandler():GetControler()))
+        return c:GetSequence()==e:GetHandler():GetSequence() and not (c:GetControler()==e:GetHandler():GetControler() and c:GetSequence()<5)
     elseif e:GetHandler():IsLocation(LOCATION_SZONE) then
         return c:GetSequence()<5 and c:GetSequence()==e:GetHandler():GetSequence() and c:IsLocation(LOCATION_MZONE)
             and c:GetControler()==e:GetHandler():GetControler()
@@ -42,7 +41,7 @@ function s.desfilter(c, e, tp)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local ds = e:GetHandlerPlayer()
-    local g=Duel.GetMatchingGroup(s.desfilter,ds,LOCATION_ONFIELD,0,e:GetHandler(), e)
+    local g=Duel.GetMatchingGroup(s.desfilter,ds,LOCATION_ONFIELD,LOCATION_ONFIELD,e:GetHandler(), e)
     if Duel.Destroy(e:GetHandler(),REASON_EFFECT) and g:GetCount()>0 then
         Duel.Destroy(g,REASON_EFFECT)
     end
