@@ -29,11 +29,11 @@ function s.splimit(e,se,sp,st)
 	return not e:GetHandler():IsLocation(LOCATION_EXTRA) or ((st&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION and se:GetHandler():IsSetCard(0x21DE))
 end
 function s.desfilter(c, e)
-    if e:GetHandler():Islocation(LOCATION_EMZONE) then
+    if e:GetHandler():IsLocation(LOCATION_EMZONE) then
         return c:GetSequence()<5 and c:GetSequence()==e:GetHandler():GetSequence() and c:IsLocation(LOCATION_MZONE)
-    elseif e:GetHandler():Islocation(LOCATION_MZONE) and e:GetHandler():GetSequence()<5 then
+    elseif e:GetHandler():IsLocation(LOCATION_MZONE) and e:GetHandler():GetSequence()<5 then
         return c:GetSequence()==e:GetHandler():GetSequence() and (c:IsLocation(LOCATION_SZONE) or c:IsLocation(LOCATION_EMZONE))
-    elseif e:GetHandler():Islocation(LOCATION_SZONE) then
+    elseif e:GetHandler():IsLocation(LOCATION_SZONE) then
         return c:GetSequence()<5 and c:GetSequence()==e:GetHandler():GetSequence() and c:IsLocation(LOCATION_MZONE)
             and c:GetControler()==e:GetHandler():GetController()
     end
