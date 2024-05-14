@@ -36,15 +36,15 @@ function s.desfilter(c, e, tp)
     local same_sequence = c_seq == h_seq
     local special_cases = false
     if h_seq == 1 then
-        special_cases = c_seq == 5
+        special_cases = (c_seq == 5 and same_controller) or (c_seq==6 and not same_controller)
     elseif h_seq == 3 then
-        special_cases = c_seq == 6
+        special_cases = (c_seq == 6 and same_controller) or (c_seq==5 and not same_controller)
     elseif h_seq == 5 then
         special_cases = c_seq == 1
     elseif h_seq == 6 then
         special_cases = c_seq == 3
     end
-    return (horizontal_adj and same_controller) or (same_sequence and same_controller) or special_cases
+    return (horizontal_adj and same_controller) or (same_sequence and same_controller) or (special_cases and c:IsLocation(LOCATION_MZONE))
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local g=Duel.GetMatchingGroup(s.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,e:GetHandler(), e)
