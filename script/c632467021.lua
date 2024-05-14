@@ -32,7 +32,7 @@ function s.desfilter(c, e, tp)
     local h_seq = e:GetHandler():GetSequence()
     local c_seq = c:GetSequence()
     local same_controller = c:GetControler()==e:GetHandler():GetControler()
-    local horizontal_adj = c_seq == h_seq+1 or c_seq == h_seq-1
+    local horizontal_adj = (c_seq == h_seq+1 or c_seq == h_seq-1) and c:GetLocation()==e:GetHandler():GetLocation()
     local same_sequence = c_seq == h_seq
     local special_cases = false
     if h_seq == 1 then
