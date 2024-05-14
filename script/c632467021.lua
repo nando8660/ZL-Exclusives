@@ -47,8 +47,7 @@ function s.desfilter(c, e, tp)
     return (horizontal_adj and same_controller) or (same_sequence and same_controller) or special_cases
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-    local ds = e:GetHandlerPlayer()
-    local g=Duel.GetMatchingGroup(s.desfilter,ds,LOCATION_ONFIELD,LOCATION_ONFIELD,e:GetHandler(), e)
+    local g=Duel.GetMatchingGroup(s.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,e:GetHandler(), e)
     if Duel.Destroy(e:GetHandler(),REASON_EFFECT) and g:GetCount()>0 then
         Duel.Destroy(g,REASON_EFFECT)
     end
