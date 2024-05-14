@@ -56,7 +56,8 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local g=Duel.GetMatchingGroup(s.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,e:GetHandler(), e)
     if Duel.Destroy(e:GetHandler(),REASON_EFFECT) and g:GetCount()>0 then
         Duel.ChangePosition(g,POS_FACEDOWN_DEFENSE)
-        local og=Duel.GetOperatedGroup()
+        -- local og=Duel.GetOperatedGroup()
+	local og=g
         local g1=og:Filter(s.filter1,nil,e)
         local g2=og:Filter(s.filter2,nil,e)
         local tc1=og:GetFirst()
