@@ -106,7 +106,7 @@ function s.mfusop(e,tp,eg,ep,ev,re,r,rp)
             tc:SetMaterial(mat1)
             Duel.SendtoGrave(mat1,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
             Duel.BreakEffect()
-            Duel.SpecialSummon(tc,SUMMON_TYPE_FUSION,tp,tp,false,false,POS_FACEUP)
+            Duel.SpecialSummon(tc,SUMMON_TYPE_FUSION,tp,1-tp,false,false,POS_FACEUP)
             tc:CompleteProcedure()
         end
     end
