@@ -31,10 +31,8 @@ end
 function s.desfilter(c, e)
     if e:GetHandler():Islocation(LOCATION_EMZONE) then
         return c:GetSequence()<5 and c:GetSequence()==e:GetHandler():GetSequence() and c:IsLocation(LOCATION_MZONE)
-    end
     elseif e:GetHandler():Islocation(LOCATION_MZONE) and e:GetHandler():GetSequence()<5 then
         return c:GetSequence()==e:GetHandler():GetSequence() and (c:IsLocation(LOCATION_SZONE) or c:IsLocation(LOCATION_EMZONE))
-    end
     elseif e:GetHandler():Islocation(LOCATION_SZONE) then
         return c:GetSequence()<5 and c:GetSequence()==e:GetHandler():GetSequence() and c:IsLocation(LOCATION_MZONE)
             and c:GetControler()==e:GetHandler():GetController()
