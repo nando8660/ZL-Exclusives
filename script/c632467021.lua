@@ -34,10 +34,7 @@ function s.desfilter(c, e, tp)
     elseif e:GetHandler():GetSequence()==3 then
         return c:GetSequence()==6
     elseif e:GetHandler():GetSequence()<5 then
-        return c:GetControler()==e:GetHandler():GetControler() and
-            (c:GetSequence()==e:GetHandler():GetSequence()) or (c:GetLocation()==e:GetHandler():GetLocation() and (
-                c:GetSequence()==e:GetHandler():GetSequence()+1 or c:GetSequence()==e:GetHandler():GetSequence()-1
-            ))
+        return c:GetSequence()==e:GetHandler():GetSequence() and c:GetControler()==e:GetHandler():GetControler()
     end
     return false
 end
