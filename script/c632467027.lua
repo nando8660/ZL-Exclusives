@@ -33,7 +33,7 @@ function s.desfilter(c, e, tp)
     local c_seq = c:GetSequence()
     local same_controller = c:GetControler()==e:GetHandler():GetControler()
     local horizontal_adj = (c_seq == h_seq+1 or c_seq == h_seq-1) and c:GetLocation()==e:GetHandler():GetLocation() and h_seq<5
-    local same_sequence = c_seq == h_seq
+    local same_sequence = c_seq == h_seq and h_seq<5
     local special_cases = false
     if h_seq == 1 then
         special_cases = (c_seq == 5 and same_controller) or (c_seq==6 and not same_controller)
