@@ -29,15 +29,7 @@ function s.splimit(e,se,sp,st)
 	return not e:GetHandler():IsLocation(LOCATION_EXTRA) or ((st&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION and se:GetHandler():IsSetCard(0x21DE))
 end
 function s.desfilter(c, e, tp)
-    if e:GetHandler():IsLocation(LOCATION_EMZONE) then
-        return c:GetSequence()<5 and c:GetSequence()==e:GetHandler():GetSequence() and c:IsLocation(LOCATION_MZONE)
-    elseif e:GetHandler():IsLocation(LOCATION_MZONE) and e:GetHandler():GetSequence()<5 then
-        return c:GetSequence()==e:GetHandler():GetSequence() and c:GetControler()==e:GetHandler():GetControler()
-    elseif e:GetHandler():IsLocation(LOCATION_SZONE) then
-        return c:GetSequence()<5 and c:GetSequence()==e:GetHandler():GetSequence() and c:IsLocation(LOCATION_MZONE)
-            and c:GetControler()==e:GetHandler():GetControler()
-    end
-    return false
+    return (c:GetSequence()==e:GetHandler():GetSequence() and c:GetControler()==e:GetHandler():GetControler) or c:GetSequence()==5
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local ds = e:GetHandlerPlayer()
