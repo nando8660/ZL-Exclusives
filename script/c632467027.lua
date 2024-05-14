@@ -40,9 +40,9 @@ function s.desfilter(c, e, tp)
     elseif h_seq == 3 then
         special_cases = (c_seq == 6 and same_controller) or (c_seq==5 and not same_controller)
     elseif h_seq == 5 then
-        special_cases = c_seq == 1
+        special_cases = c_seq == 1 and same_controller
     elseif h_seq == 6 then
-        special_cases = c_seq == 3
+        special_cases = c_seq == 3 and same_controller
     end
     return (horizontal_adj and same_controller) or (same_sequence and same_controller) or (special_cases and c:IsLocation(LOCATION_MZONE))
 end
