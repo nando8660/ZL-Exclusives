@@ -29,15 +29,11 @@ function s.splimit(e,se,sp,st)
 	return not e:GetHandler():IsLocation(LOCATION_EXTRA) or ((st&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION and se:GetHandler():IsSetCard(0x21DE))
 end
 function s.desfilter(c, e, tp)
-    local handler = e:GetHandler()
-    local h_seq = handler:GetSequence()
+    local h_seq = e:GetHandler():GetSequence()
     local c_seq = c:GetSequence()
-    local h_loc = handler:GetLocation()
-    local c_loc = c:GetLocation()
-    local same_location = c_loc == h_loc
-    local adjacent_sequence = (c_seq == h_seq + 1) or (c_seq == h_seq - 1)
-    local same_sequence_and_controller = (c_seq == h_seq) and (c:GetControler() == handler:GetControler())
-    
+    local same_controller = c:GetLocation()==e:GetHandler():GetLocation()
+    local horizontal_adj = c_seq == h_seq+1 or c_seq == h_seq-1
+    local same_sequence = c_seq == h_seq
     local special_cases = false
     if h_seq == 1 then
         special_cases = c_seq == 5
@@ -48,8 +44,7 @@ function s.desfilter(c, e, tp)
     elseif h_seq == 6 then
         special_cases = c_seq == 3
     end
-    
-    return same_location and (adjacent_sequence or same_sequence_and_controller or special_cases)
+    return (horizontal_adj and same_controller) or (same_sequence and same_controller) or special_cases
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local ds = e:GetHandlerPlayer()
