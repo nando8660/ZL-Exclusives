@@ -12,11 +12,11 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
 	e1:SetValue(s.splimit)
 	c:RegisterEffect(e1)
-    -- Crystalize itself as quick-effect
+	-- Crystalize itself as quick-effect
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetType(EFFECT_TYPE_QUICK_O)
-    e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1,id)
 	e2:SetCondition(function(e) return Duel.IsMainPhase() end)
@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	e2:SetTarget(s.pltg)
 	e2:SetOperation(s.plop)
 	c:RegisterEffect(e2)
-    -- Summon itself and draw 1
+	-- Summon itself and draw 1
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,1))
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -36,6 +36,18 @@ function s.initial_effect(c)
 	e3:SetTarget(s.sptg)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
+	--move
+	local e4=Effect.CreateEffect(c)
+	e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e4:SetType(EFFECT_TYPE_QUICK_O)
+	e4:SetCode(EVENT_SUMMON_SUCCESS+EVENT_SPSUMMON_SUCCESS+EVENT_FLIP_SUMMON_SUCCESS)
+	e4:SetRange(LOCATION_ONFIELD)
+	e4:SetCountLimit(3)
+	e4:SetCondition(s.seqcon)
+	e4:SetCost(s.seqcost)
+	e:SetTarget(s.seqtg)
+	e4:SetOperation(s.seqop)
+	c:RegisterEffect(e4)
 end
 function s.splimit(e,se,sp,st)
 	return not e:GetHandler():IsLocation(LOCATION_EXTRA) or ((st&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION and se:GetHandler():IsSetCard(0x21DE))
@@ -71,4 +83,32 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)>0 then
         Duel.Draw(tp, 1, REASON_EFFECT)
     end
+end
+-- MOVE
+function s.spfilter(c,sp)
+	return c:GetSummonPlayer()==sp
+end
+function s.spfilter(c)
+	return c:IsFaceup() and c:IsSetCard(0x21de) and c:IsOriginalType(TYPE_MONSTER) and c:IsRace(RACE_PSYCHIC) and c:IsAbleToHand()
+end
+function s.seqcon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.spfilter,1,nil,1-tp)
+		and Duel.IsExistingMatchingCard(s.filterPSY, LOCATION_ONFIELD, 1, 0, 1, nil, e, tp)
+end
+function s.seqcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.CheckLPCost(tp,500) end
+	Duel.PayLPCost(tp,500)
+end
+function s.seqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) end
+	if chk==0 then return Duel.IsExistingTarget(nil,tp,0,LOCATION_MZONE,1,nil)
+		and Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0 end
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,0))
+	Duel.SelectTarget(tp,nil,tp,0,LOCATION_MZONE,1,1,nil)
+end
+function s.seqop(e,tp,eg,ep,ev,re,r,rp)
+	local tc=Duel.GetFirstTarget()
+	if not tc:IsRelateToEffect(e) or tc:IsControler(tp) or tc:IsImmuneToEffect(e) or Duel.GetLocationCount(1-tp,LOCATION_MZONE)<=0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
+	Duel.MoveSequence(tc,math.log(Duel.SelectDisableField(tp,1,0,LOCATION_MZONE,0)>>16,2))
 end
