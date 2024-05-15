@@ -92,7 +92,7 @@ function s.spfilter(c,sp)
 	return c:GetSummonPlayer()==sp
 end
 function s.filterPSY(c)
-	return c:IsFaceup() and c:IsSetCard(0x21de) and c:IsOriginalType(TYPE_MONSTER) and c:IsRace(RACE_PSYCHIC) and c:IsAbleToHand()
+	return c:IsFaceup() and c:IsOriginalType(TYPE_MONSTER) and c:IsRace(RACE_PSYCHIC) and c:IsAbleToHand()-- and c:IsSetCard(0x21de)
 end
 function s.seqcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.spfilter,1,nil,1-tp)
