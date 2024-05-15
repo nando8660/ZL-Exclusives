@@ -14,9 +14,8 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_CHANGE_BATTLE_DAMAGE)
 	e1:SetValue(aux.ChangeBattleDamage(0,HALF_DAMAGE))
 	c:RegisterEffect(e1)
-    --Place this card in the Spell/Trap Zone as Continuous Spell
+	--Place this card in the Spell/Trap Zone as Continuous Spell
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_HAND)
 	e2:SetCountLimit(1,id)
