@@ -45,7 +45,7 @@ function s.initial_effect(c)
 	e4:SetCountLimit(3)
 	e4:SetCondition(s.seqcon)
 	e4:SetCost(s.seqcost)
-	e:SetTarget(s.seqtg)
+	e4:SetTarget(s.seqtg)
 	e4:SetOperation(s.seqop)
 	c:RegisterEffect(e4)
 end
