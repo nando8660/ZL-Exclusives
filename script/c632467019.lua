@@ -85,7 +85,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 -- TO HAND
 function s.thfilter(c)
-	return c:IsFaceup() and c:IsOriginalType(TYPE_MONSTER) and c:IsRace(RACE_PSYCHIC) and c:IsAbleToHand() and c:IsSetCard(0x21de)
+	return c:IsFaceup() and c:IsOriginalType(TYPE_MONSTER) and c:IsRace(RACE_PSYCHIC) and c:IsAbleToHand()-- and c:IsSetCard(0x21de)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() and chkc:IsControler(tp) and s.thfilter(chkc) end
