@@ -96,7 +96,7 @@ function s.filterPSY(c)
 end
 function s.seqcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.spfilter,1,nil,1-tp)
-		and Duel.IsExistingMatchingCard(s.filterPSY, LOCATION_ONFIELD, 1, 0, 1, nil, e, tp)
+		and Duel.IsExistingMatchingCard(s.filterPSY,tp,LOCATION_ONFIELD,0,1,nil)		
 end
 function s.seqcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,500) end
