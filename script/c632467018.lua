@@ -91,7 +91,7 @@ end
 function s.spfilter(c,sp)
 	return c:GetSummonPlayer()==sp
 end
-function s.spfilter(c)
+function s.filterPSY(c)
 	return c:IsFaceup() and c:IsSetCard(0x21de) and c:IsOriginalType(TYPE_MONSTER) and c:IsRace(RACE_PSYCHIC) and c:IsAbleToHand()
 end
 function s.seqcon(e,tp,eg,ep,ev,re,r,rp)
