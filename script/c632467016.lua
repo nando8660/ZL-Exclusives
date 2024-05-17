@@ -2,7 +2,7 @@
 -- EonTech - The Stellar Core
 local s,id=GetID()
 function s.initial_effect(c)
-    --Treated as a "Tempor-Ax Project Terraform: Stellar Core" while on the deck/hand
+	--Treated as a "Tempor-Ax Project Terraform: Stellar Core" while on the deck/hand
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_SINGLE)
 	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
@@ -21,6 +21,18 @@ function s.initial_effect(c)
 	e1:SetTarget(s.settg)
 	e1:SetOperation(s.setop)
 	c:RegisterEffect(e1)
+	-- Shuffle 1 "EonTech ASSEMBLY PROCEDURE" from your GY into the deck
+	local e2=Effect.CreateEffect(c)
+	e2:SetCategory(CATEGORY_TOHAND)
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCode(EVENT_CHAINING)
+	e2:SetRange(LOCATION_GRAVE)
+	e2:SetCountLimit(1,{id,1})
+	e2:SetCondition(function(e,tp,eg,ep) return ep==1-tp end)
+	e2:SetCost(s.thcost)
+	e2:SetTarget(s.thtg)
+	e2:SetOperation(s.thop)
+	c:RegisterEffect(e2)
 end
 function s.filter1(c,e)
 	return c:IsCode(632467013) and c:IsAbleToHand()
@@ -46,4 +58,24 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	if tc then
 		Duel.SSet(tp,tc:GetFirst())
 	end
+end
+function s.filter2(c,e)
+	return c:IsCode(632467013) and c:IsAbleToDeck()
+end
+function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.CheckLPCost(tp,1000) end
+	Duel.PayLPCost(tp,1000)
+end
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetOperationInfo(0,CATEGORY_TODECK,nil,1,tp,LOCATION_GRAVE)
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,e:GetHandler(),1,0,0)
+end
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
+	local th=e:GetHandler()
+	local td=Duel.SelectMatchingCard(tp, s.filter2, tp, LOCATION_GRAVE, 0, 1, 1)
+	if th:IsRelateToEffect(e) then
+		Duel.SendtoHand(th,nil,REASON_EFFECT)
+	end
+	Duel.SendtoDeck(td, nil, SEQ_DECKSHUFFLE, REASON_EFFECT)
 end
