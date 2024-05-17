@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	e1:SetTarget(s.destg2)
 	e1:SetOperation(s.desop2)
 	c:RegisterEffect(e1)
-    --Place this card in the Spell/Trap Zone as Continuous Spell
+	--Place this card in the Spell/Trap Zone as Continuous Spell
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetType(EFFECT_TYPE_IGNITION)
@@ -61,13 +61,13 @@ function s.destg2(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.desop2(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.CountHeads(Duel.TossCoin(tp,2))==2 then
-		local g=Duel.GetMatchingGroup(nil, tp, 0, LOCATION_HAND, nil, e, tp)
-		local tc=g:RandomSelect(tp, 1)
-		Duel.Destroy(tc,REASON_EFFECT)
-	else
 		local tc=Duel.SelectMatchingCard(tp, nil, tp, 0, LOCATION_ONFIELD, 1, 1, nil, e, tp)
 		Duel.Destroy(tc,REASON_EFFECT)
 		Duel.Destroy(e:GetHandler(),REASON_EFFECT)
+	else
+		local g=Duel.GetMatchingGroup(nil, tp, 0, LOCATION_HAND, nil, e, tp)
+		local tc=g:RandomSelect(tp, 1)
+		Duel.Destroy(tc,REASON_EFFECT)
 	end
 end
 -- REST
