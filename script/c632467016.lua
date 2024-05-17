@@ -74,8 +74,7 @@ end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local th=e:GetHandler()
 	local td=Duel.SelectMatchingCard(tp, s.filter2, tp, LOCATION_GRAVE, 0, 1, 1, e)
-	if th:IsRelateToEffect(e) then
+	if th:IsRelateToEffect(e) and Duel.SendtoDeck(td, nil, SEQ_DECKSHUFFLE, REASON_EFFECT) then
 		Duel.SendtoHand(th,nil,REASON_EFFECT)
 	end
-	Duel.SendtoDeck(td, nil, SEQ_DECKSHUFFLE, REASON_EFFECT)
 end
