@@ -63,7 +63,7 @@ function s.tdcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
 end
 function s.tdop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.SelectMatchingCard(tp, s.filter2, LOCATION_GRAVE, 1, 0, 0, 2, e, tp)
+	local g=Duel.SelectMatchingCard(tp, s.filter2, LOCATION_GRAVE, 1, 0, 1, 2, true, e, tp)
 	Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
 end
 function s.chngcon(scard,sumtype,tp)
