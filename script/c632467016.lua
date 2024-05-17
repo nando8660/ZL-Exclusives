@@ -16,7 +16,7 @@ function s.initial_effect(c)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCountLimit(1,id)
 	e1:SetCode(EVENT_PHASE+PHASE_STANDBY)
-	e1:SetCondition(s.setcon)
+	-- e1:SetCondition(s.setcon) -- Deprecated!
 	e1:SetCost(s.setcost)
 	e1:SetTarget(s.settg)
 	e1:SetOperation(s.setop)
