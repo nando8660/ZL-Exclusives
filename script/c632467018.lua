@@ -4,7 +4,7 @@ local s,id=GetID()
 function s.initial_effect(c)
     --fusion material
     c:EnableReviveLimit()
-    Fusion.AddProcMixN(c, true, true, 632467015,3)
+    Fusion.AddProcMixN(c, false, false, 632467015,3)
 	--Must be Fusion Summoned by a "Tempor-Ax" card effect
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
