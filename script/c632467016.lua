@@ -73,7 +73,7 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local th=e:GetHandler()
-	local td=Duel.SelectMatchingCard(tp, s.filter2, tp, LOCATION_GRAVE, 0, 1, 1)
+	local td=Duel.SelectMatchingCard(tp, s.filter2, tp, LOCATION_GRAVE, 0, 1, 1, e)
 	if th:IsRelateToEffect(e) then
 		Duel.SendtoHand(th,nil,REASON_EFFECT)
 	end
