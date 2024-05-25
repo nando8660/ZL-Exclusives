@@ -36,9 +36,9 @@ function s.desfilter(c, e, tp)
     local same_sequence = c_seq == h_seq and h_seq<5
     local special_cases = false
     if h_seq == 1 then
-        special_cases = (c_seq == 5 and same_controller) or (c_seq==6 and not same_controller)
+        special_cases = (c_seq == 5 and same_controller) --or (c_seq==6 and not same_controller)
     elseif h_seq == 3 then
-        special_cases = (c_seq == 6 and same_controller) or (c_seq==5 and not same_controller)
+        special_cases = (c_seq == 6 and same_controller) --or (c_seq==5 and not same_controller)
     elseif h_seq == 5 then
         special_cases = c_seq == 1 and same_controller
     elseif h_seq == 6 then
