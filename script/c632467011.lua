@@ -121,6 +121,8 @@ function s.mfusop(e,tp,eg,ep,ev,re,r,rp)
 					Duel.BreakEffect()
 					Duel.SpecialSummon(cmtc,SUMMON_TYPE_FUSION,tp,1-tp,false,false,POS_FACEUP)
 					cmtc:CompleteProcedure()
+					--Destroy it during the End Phase
+					aux.DelayedOperation(cmtc,PHASE_END,id,e,tp,function(dg) Duel.Destroy(dg,REASON_EFFECT) end,nil,0,nil,aux.Stringid(id,2))
 				end
 			end
 			return -- end funcion here
