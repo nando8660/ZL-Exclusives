@@ -69,11 +69,17 @@ end
 
 function s.mfustg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then
+		local cm=Duel.GetChainMaterial(tp)
         local chkf=tp
         -- Obter materiais de fusão da HAND, SZONE e MZONE
         local mg1=Duel.GetFusionMaterial(tp):Filter(s.filter1,nil,e)
         local mg2=Duel.GetMatchingGroup(Card.IsCanBeFusionMaterial,tp,LOCATION_SZONE+LOCATION_MZONE,0,nil)
         mg1:Merge(mg2)
+		-- Verifica se Chaim Material está aplicado, e obtem materiais apropriados
+		if cm~=nil then
+			local cmg=Duel.GetMatchingGroup(Card.IsCanBeFusionMaterial,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE+LOCATION_MZONE,0,nil)
+			mg1:Merge(cmg)
+		end
         -- Verificar se existe algum monstro de fusão que possa ser invocado com todos os materiais necessários
         local res=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_EXTRA,0,nil,e,tp,mg1,nil,chkf):GetCount()>0
         -- {Linhas de debug para imprimir os grupos no chat}
@@ -91,6 +97,36 @@ function s.rescon(c,e,tp,mg,chkf)
 end
 
 function s.mfusop(e,tp,eg,ep,ev,re,r,rp)
+    local cm = Duel.GetChainMaterial(tp)
+	-- can fusion WITHOUT chan material?
+	if cm~=nil then
+		local chkf=tp
+		local mg1=Duel.GetFusionMaterial(tp):Filter(s.filter1,nil,e)
+		local mg2=Duel.GetMatchingGroup(Card.IsCanBeFusionMaterial,tp,LOCATION_SZONE+LOCATION_MZONE,0,nil)
+		mg1:Merge(mg2)
+		local can_fusion_no_cm=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_EXTRA,0,nil,e,tp,mg1,nil,chkf):GetCount()>0
+		-- possibility of using chain material
+		if can_fusion_no_cm==false or Duel.SelectYesNo(tp,cm:GetDescription()) then
+			local chkf=tp
+			local cmg=Duel.GetMatchingGroup(Card.IsCanBeFusionMaterial,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE+LOCATION_MZONE,0,nil)
+			local cmsg=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_EXTRA,0,nil,e,tp,cmg,nil,chkf)
+			if cmsg:GetCount()>0 then
+				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+				local cmtg=cmsg:Select(tp,1,1,nil)
+				local cmtc=cmtg:GetFirst()
+				if cmtc then
+					local cmmat1=Duel.SelectFusionMaterial(tp,cmtc,cmg,nil,chkf)
+					cmtc:SetMaterial(cmmat1)
+					Duel.Remove(cmmat1, POS_FACEUP, REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
+					Duel.BreakEffect()
+					Duel.SpecialSummon(cmtc,SUMMON_TYPE_FUSION,tp,1-tp,false,false,POS_FACEUP)
+					cmtc:CompleteProcedure()
+				end
+			end
+			return -- end funcion here
+		end
+	end
+    -- Otherwise, fusion summon normally
     local chkf=tp
     local mg1=Duel.GetFusionMaterial(tp):Filter(s.filter1,nil,e)
     -- Inclua cartas na zona de magia/armadilha como material de fusão
