@@ -122,7 +122,19 @@ function s.mfusop(e,tp,eg,ep,ev,re,r,rp)
 					Duel.SpecialSummon(cmtc,SUMMON_TYPE_FUSION,tp,1-tp,false,false,POS_FACEUP)
 					cmtc:CompleteProcedure()
 					--Destroy it during the End Phase
-					aux.DelayedOperation(cmtc,PHASE_END,id,39980304,tp,function(dg) Duel.Destroy(dg,REASON_EFFECT) end,nil,0,nil,aux.Stringid(id,2))
+					local fid=e:GetHandler():GetFieldID()
+					tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1,fid)
+					local e1=Effect.CreateEffect(39980304)
+					e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+					e1:SetCode(EVENT_PHASE+PHASE_END)
+					e1:SetCountLimit(1)
+					e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+					e1:SetLabel(fid)
+					e1:SetLabelObject(tc)
+					e1:SetCondition(function(e,tp,eg,ep,ev,re,r,rp) return (e:GetLabelObject():GetFlagEffectLabel(id) ~= e:GetLabel() and e:Reset() or true) and false or true end)
+					e1:SetOperation(function(e,tp,eg,ep,ev,re,r,rp) Duel.Destroy(e:GetLabelObject(),REASON_EFFECT) end)
+					Duel.RegisterEffect(e1,tp)
+					-- aux.DelayedOperation(cmtc,PHASE_END,id,e,tp,function(dg) Duel.Destroy(dg,REASON_EFFECT) end,nil,0,nil,aux.Stringid(id,2))
 				end
 			end
 			return -- end funcion here
