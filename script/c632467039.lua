@@ -77,8 +77,7 @@ function s.lpcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD,nil)
 end
 function s.lpfilter(c,tp)
-	return c:IsType(TYPE_SYNCHRO) and c:IsSummonType(SUMMON_TYPE_SYNCHRO)
-		and c:IsSetCard(0x21e1) and c:IsPreviousLocation(LOCATION_GRAVE) and c:IsSummonPlayer(tp)
+	return c:IsSummonType(SUMMON_TYPE_SYNCHRO) and c:IsPreviousLocation(LOCATION_GRAVE) and c:IsSummonPlayer(tp)
 end
 function s.attfilter(c,att)
 	return c:IsFaceup() and c:IsAttribute(att)
