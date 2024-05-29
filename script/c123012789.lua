@@ -1,105 +1,154 @@
---Ether Counter
+-- Ether Counter v2.0
 local s,id=GetID()
 function s.initial_effect(c)
-	c:EnableCounterPermit(COUNTER_SPELL)
-	aux.AddSkillProcedure(c,2,false,nil,nil)
-	local e1=Effect.CreateEffect(c)
+	local e1=Effect.CreateEffect(c)	
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e1:SetCode(EVENT_STARTUP)
-	e1:SetRange(LOCATION_ALL)
-	e1:SetCountLimit(1)
-	e1:SetRange(0x5f)
-	e1:SetLabel(0)
-	e1:SetOperation(s.flipop)
+	e1:SetCode(EVENT_ADJUST)
+	e1:SetCountLimit(1, id)
+	e1:SetRange(0xff)
+	e1:SetOperation(s.init)
 	c:RegisterEffect(e1)
 end
-function s.flipop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
-	Duel.Hint(HINT_CARD,tp,id)
-	--Registra Flag para o tp
-	Duel.RegisterFlagEffect(tp,107,0,0,0)
-	-- Cria os efeitos restantes
-	local c=e:GetHandler()
+Ether_Counters_In_Game = 0
+function s.filter(c)
+    return c:IsCode(id)
+end
+function s.init(e, tp, eg, ep, ev, re, r, rp)
+    local c=e:GetHandler()
+    -- Registra no Client quem é p0
+    aux.RegisterClientHint(c, nil, 0, 1, 0, aux.Stringid(id, 0), nil)
+    -- Registra no Client quem é p1
+    aux.RegisterClientHint(c, nil, 1, 1, 0, aux.Stringid(id, 1), nil)
+
+    -- Conta quantos Ether Counter há no jogo
+    if Duel.GetFlagEffectLabel(0, id)==nil and Duel.GetFlagEffectLabel(1, id)==nil then
+        local this_local_count = 0
+        if Duel.IsExistingMatchingCard(s.filter, 0, 0, LOCATION_ALL, 1, nil, nil) then
+            this_local_count = this_local_count+1
+        end
+        if Duel.IsExistingMatchingCard(s.filter, 1, 0, LOCATION_ALL, 1, nil, nil) then
+            this_local_count = this_local_count+1
+        end
+        Ether_Counters_In_Game = this_local_count
+        Debug.Message("Há exatamente "..Ether_Counters_In_Game.." Ether Counter no jogo.")
+    end
+    -- Remove estes contadores do Duelo
+    if Duel.IsExistingMatchingCard(s.filter, 0, 0, LOCATION_ALL, 1, nil, nil) then  
+        local d0=Duel.GetMatchingGroupCount(s.filter, 0, LOCATION_HAND, 0, nil, nil)
+        local g0=Duel.GetMatchingGroup(s.filter, 0, LOCATION_ALL, 0, nil, nil)
+        if Duel.SendtoDeck(g0, 0, -2, REASON_RULE) then
+            Duel.Draw(0, d0, REASON_RULE)
+        end
+    end
+    if Duel.IsExistingMatchingCard(s.filter, 1, 0, LOCATION_ALL, 1, nil, nil) then
+        local d1=Duel.GetMatchingGroupCount(s.filter, 1, LOCATION_HAND, 0, nil, nil)
+        local g1=Duel.GetMatchingGroup(s.filter, 1, LOCATION_ALL, 0, nil, nil)
+        if Duel.SendtoDeck(g1, 1, -2, REASON_RULE) then
+            Duel.Draw(1, d1, REASON_RULE)
+        end
+    end
+    -- Registra Flag Effects
+    if Ether_Counters_In_Game==1 then 
+        Duel.RegisterFlagEffect(0, id, 0, 0, 0)
+        Duel.RegisterFlagEffect(1, id, 0, 0, 0)
+    else
+        Duel.RegisterFlagEffect(tp, id, 0, 0, 0)
+    end
+    -- Inicia o Registro de LP em 0 (O Ether e a Label)
+    local Ether=0
+    if Ether_Counters_In_Game==1 then 
+        Duel.SetFlagEffectLabel(0, id, Ether)
+        Duel.SetFlagEffectLabel(1, id, Ether)
+    else
+        Duel.SetFlagEffectLabel(tp, id, Ether)
+    end
+    -- Retorna valor de Ether do(s) jogador(es)
+    if Ether_Counters_In_Game==1 then 
+        -- Define "Get_Owner"
+        local Get_p0_Ether = Duel.GetFlagEffectLabel(0, id)
+        local Get_p1_Ether = Duel.GetFlagEffectLabel(1, id)
+        Debug.Message("Registro de LP do Jogador 0: "..Get_p0_Ether)
+        Debug.Message("Registro de LP do Jogador 1: "..Get_p1_Ether)
+    else
+        -- Define "Get_Owner"
+        local Get_tp_Ether = Duel.GetFlagEffectLabel(tp, id)
+        Debug.Message("Registro de LP do Jogador "..tp..": "..Get_tp_Ether)
+    end
+    -- Inicia o efeito que faz contagem
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_RECOVER)
+    e1:SetCondition(s.LP_Aumenta)
+	e1:SetOperation(s.Ether_Aumenta)
+    if Ether_Counters_In_Game==1 then
+        Duel.RegisterEffect(e1, 0)
+    else
+        Duel.RegisterEffect(e1, tp)
+    end
+    -- Registra derrota por Overflow
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e2:SetCode(EVENT_RECOVER)
-	e2:SetCondition(s.countercon)
-	e2:SetOperation(s.addcounter)
-	Duel.RegisterEffect(e2,tp)
-	--lose
+	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e2:SetCode(EVENT_PHASE+PHASE_END)
+	e2:SetCountLimit(1)
+	e2:SetCondition(s.OverflowCon)
+	e2:SetOperation(s.Derrota)
+    Duel.RegisterEffect(e2, 0)
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e3:SetCode(EVENT_PHASE+PHASE_END)
+	e3:SetCode(EVENT_PHASE+PHASE_STANDBY)
 	e3:SetCountLimit(1)
-	e3:SetCondition(s.losecon)
-	e3:SetOperation(s.loseop)
-	Duel.RegisterEffect(e3,tp)
-	--win
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e4:SetCode(EVENT_PHASE+PHASE_STANDBY)
-	e4:SetCountLimit(1)
-	e4:SetCondition(s.wincon)
-	e4:SetOperation(s.winop)
-	Duel.RegisterEffect(e4,tp)
-	--Reduzir flag quando recebe dano por efeito
-	-- local e5=Effect.CreateEffect(c)
- --    	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
- --    	e5:SetCode(EVENT_DAMAGE)
- --   	e5:SetCondition(s.damagecon)
- --    	e5:SetOperation(s.damageop)
- --    	Duel.RegisterEffect(e5,tp)
-	-- Retorna o Registro inicial (Deve retornar 0)
-	Debug.Message("Registro de LP: "..Duel.GetFlagEffectLabel(tp,107).." | jogador "..(tp))
+	e3:SetCondition(s.VitoriaCon)
+	e3:SetOperation(s.Vitoria)
+    Duel.RegisterEffect(e3, 0)
 end
-
-function s.countercon(e,tp,eg,ep,ev,re,r,rp)
-	return ep==tp
+function s.LP_Aumenta(e, tp, eg, ep, ev, re, r, rp)
+    if Ether_Counters_In_Game==1 then
+        return ep==1 or ep==0
+    else
+        return ep==tp
+    end
 end
-
-function s.addcounter(e,tp,eg,ep,ev,re,r,rp)
-	local flag=Duel.GetFlagEffectLabel(tp,107)
-	if not flag then
-		Duel.RegisterFlagEffect(tp,107,RESET_PHASE+PHASE_END,0,1,0)
-		Duel.SetFlagEffectLabel(tp,107,ev)
-	else
-		Duel.SetFlagEffectLabel(tp,107,flag+ev)
-	end
-	Debug.Message("Registro de LP após o ganho: "..Duel.GetFlagEffectLabel(tp,107).." | jogador "..(tp))
+function s.Ether_Aumenta(e,tp,eg,ep,ev,re,r,rp)
+    local Ganho_de_LP = ev
+    if Ether_Counters_In_Game==1 then
+        if ep==0 then
+            local player = 0
+            local Get_Ether_Prev = Duel.GetFlagEffectLabel(player, id)
+            Duel.SetFlagEffectLabel(player, id, Get_Ether_Prev+Ganho_de_LP)
+            local Get_Ether = Duel.GetFlagEffectLabel(player, id)
+            Debug.Message("Registro de LP do Jogador "..player..": "..Get_Ether)
+        elseif ep==1 then
+            local player = 1
+            local Get_Ether_Prev = Duel.GetFlagEffectLabel(player, id)
+            Duel.SetFlagEffectLabel(player, id, Get_Ether_Prev+Ganho_de_LP)
+            local Get_Ether = Duel.GetFlagEffectLabel(player, id)
+            Debug.Message("Registro de LP do Jogador "..player..": "..Get_Ether)
+        end
+    else
+        local player = tp
+        local Get_Ether_Prev = Duel.GetFlagEffectLabel(player, id)
+        Duel.SetFlagEffectLabel(player, id, Get_Ether_Prev+Ganho_de_LP)
+        local Get_Ether = Duel.GetFlagEffectLabel(player, id)
+        Debug.Message("Registro de LP do Jogador "..player..": "..Get_Ether)
+    end
 end
-
-function s.wincon(e,tp,eg,ep,ev,re,r,rp)
-	local flag=Duel.GetFlagEffectLabel(tp,107)
-	return flag and flag>=10000 and not (Duel.GetLP(tp)>=5000)
+function s.OverflowCon(e,tp,eg,ep,ev,re,r,rp)
+    return Duel.GetLP(0)>=15000 or Duel.GetLP(1)>=15000
 end
-
-function s.winop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Win(tp,0x46)
+function s.Derrota(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetLP(0)>=15000 then Duel.Win(1,0x47) return end
+	if Duel.GetLP(1)>=15000 then Duel.Win(0,0x47) return end
+	Duel.Win(PLAYER_NONE, 0x47)
 end
-
-function s.losecon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetLP(tp)>=15000
+function s.VitoriaCon(e,tp,eg,ep,ev,re,r,rp)
+    return (Duel.GetLP(0)>=5000 and Duel.GetFlagEffectLabel(0, id)>=10000) 
+        or (Duel.GetLP(1)>=5000 and Duel.GetFlagEffectLabel(1, id)>=10000) 
 end
-
-function s.loseop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Win(1-tp,0x47)
+function s.Vitoria(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetLP(0)>=5000 and Duel.GetFlagEffectLabel(0, id)>=10000 then Duel.Win(1,0x46) return end
+	if Duel.GetLP(1)>=5000 and Duel.GetFlagEffectLabel(1, id)>=10000 then Duel.Win(0,0x46) return end
+	Duel.Win(PLAYER_NONE, 0x46)
 end
-
--- condition to check for effect damage to the player
--- function s.damagecon(e,tp,eg,ep,ev,re,r,rp)
---     return ep==tp and bit.band(r,REASON_EFFECT)~=0
--- end
-
--- operation to reduce the flag value by the amount of effect damage taken
--- function s.damageop(e,tp,eg,ep,ev,re,r,rp)
---     local flag=Duel.GetFlagEffectLabel(tp,107)
---     if flag then
---         local new_val = flag - ev
---         if new_val < 0 then new_val = 0 end -- prevent the flag from going negative
---         Duel.SetFlagEffectLabel(tp,107,new_val)
---     end
---     Debug.Message("Registro de LP após dano: "..Duel.GetFlagEffectLabel(tp,107).." | jogador "..(tp))
--- end
