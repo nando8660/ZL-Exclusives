@@ -5,9 +5,9 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetCode(EVENT_ADJUST)
-	e1:SetCondition(function(c, e, tp) return Duel.GetTurnCount()==1 end)
+	e1:SetCondition(function(e,tp,eg,ep,ev,re,r,rp) return Duel.GetTurnCount()==1 end)
 	e1:SetCountLimit(1, id, EFFECT_COUNT_CODE_DUEL)
-	e1:SetRange(0xff)
+	e1:SetRange(LOCATION_ALL)
 	e1:SetOperation(s.init)
 	c:RegisterEffect(e1)
 end
@@ -34,19 +34,15 @@ function s.init(e, tp, eg, ep, ev, re, r, rp)
         Ether_Counters_In_Game = this_local_count
         Debug.Message("Há exatamente "..Ether_Counters_In_Game.." Ether Counter no jogo.")
     end
+    Duel.BreakEffect()
     -- Remove estes contadores do Duelo
-    if Duel.IsExistingMatchingCard(s.filter, 0, 0, LOCATION_ALL, 1, nil, nil) then  
+    if Duel.IsExistingMatchingCard(s.filter, 0, LOCATION_ALL, LOCATION_ALL, 1, nil, nil) then  
         local d0=Duel.GetMatchingGroupCount(s.filter, 0, LOCATION_HAND, 0, nil, nil)
-        local g0=Duel.GetMatchingGroup(s.filter, 0, LOCATION_ALL, 0, nil, nil)
-        if Duel.SendtoDeck(g0, 0, -2, REASON_RULE) then
-            Duel.Draw(0, d0, REASON_RULE)
-        end
-    end
-    if Duel.IsExistingMatchingCard(s.filter, 1, 0, LOCATION_ALL, 1, nil, nil) then
         local d1=Duel.GetMatchingGroupCount(s.filter, 1, LOCATION_HAND, 0, nil, nil)
-        local g1=Duel.GetMatchingGroup(s.filter, 1, LOCATION_ALL, 0, nil, nil)
-        if Duel.SendtoDeck(g1, 1, -2, REASON_RULE) then
-            Duel.Draw(1, d1, REASON_RULE)
+        local g=Duel.GetMatchingGroup(s.filter, 0, LOCATION_ALL, LOCATION_ALL, nil, nil)
+        if Duel.SendtoDeck(g, nil, -2, REASON_RULE) then 
+            Duel.Draw(0, d0, REASON_RULE) 
+            Duel.Draw(1, d1, REASON_RULE) 
         end
     end
     -- Registra Flag Effects
