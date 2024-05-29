@@ -3,6 +3,13 @@ local s,id=GetID()
 function s.initial_effect(c)
     --Must be properly summoned before reviving
 	c:EnableReviveLimit()
+	--cannot special summon
+	local e1=Effect.CreateEffect(c)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
+	e1:SetValue(aux.synlimit)
+	c:RegisterEffect(e1)
 	--Special Summon procedure
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
@@ -14,25 +21,14 @@ function s.initial_effect(c)
 	e2:SetOperation(s.sprop)
 	e2:SetValue(SUMMON_TYPE_SYNCHRO)
 	c:RegisterEffect(e2)
-	-- you take the battle damage
-	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_FIELD)
-	e3:SetCode(EFFECT_REFLECT_BATTLE_DAMAGE)
-	e3:SetRange(LOCATION_MZONE)
-	e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e3:SetTargetRange(0,1)
-	e3:SetCondition(s.dmgcond)
-	c:RegisterEffect(e3)
-	--damage conversion
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_FIELD)
-	e4:SetCode(EFFECT_REVERSE_DAMAGE)
-	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e4:SetRange(LOCATION_MZONE)
-	e4:SetCondition(function(e,tp,eg,ev,ep,re,r,rp) return Duel.GetBattleDamage(tp)>0 end)
-	e4:SetTargetRange(1,0)
-	e4:SetValue(s.rev)
-	c:RegisterEffect(e4)
+	-- Gain LP instead of inflicting battle damage
+    local e3=Effect.CreateEffect(c)
+    e3:SetCategory(CATEGORY_RECOVER)
+    e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+    e3:SetCode(EVENT_PRE_BATTLE_DAMAGE)
+    e3:SetRange(LOCATION_MZONE)
+    e3:SetOperation(s.reop)
+    c:RegisterEffect(e3)
 	-- battle indestructable
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE)
@@ -98,13 +94,8 @@ function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 end
 -- SUMMON PROC (END)
 -- Batte Damage (Start)
-function s.dmgcond(e,tp)
-	return Duel.GetBattleDamage(tp)>0 and
-		(Duel.GetAttacker()==e:GetHandler() or Duel.GetAttackTarget()==e:GetHandler())
-end
-function s.rev(e,re,r,rp,rc)
-	return r&REASON_BATTLE~=0 and 
-		(Duel.GetAttacker()==e:GetHandler() or (Duel.GetAttackTarget() and Duel.GetAttackTarget()==e:GetHandler()))
+function s.reop(e,tp,eg,ep,ev,re,r,rp)
+    if ep~=tp and Duel.Recover(tp, ev, REASON_EFFECT) then Duel.ChangeBattleDamage(1-tp, 0) end
 end
 -- Battle Damage (End)
 -- Special Summon and Negate (Start)
@@ -123,7 +114,7 @@ end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then
-		return Duel.GetMZoneCount(tp,c)>0
+		return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 			and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_REMOVED,LOCATION_REMOVED,1,nil,e,tp)
 	end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_REMOVED)
