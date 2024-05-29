@@ -27,7 +27,7 @@ function s.initial_effect(c)
 	e3:SetDescription(aux.Stringid(id,2))
 	e3:SetCategory(CATEGORY_REMOVE+CATEGORY_LEAVE_GRAVE+CATEGORY_SPECIAL_SUMMON)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	-- e3:SetProperty(EFFECT_FLAG_DELAY) -- É um efeito When
+	e3:SetProperty(EFFECT_FLAG_DELAY) 
 	e3:SetCode(EVENT_TO_GRAVE)
 	e3:SetRange(LOCATION_GRAVE)
 	e3:SetCondition(s.revcon)
@@ -66,12 +66,11 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
     Duel.Draw(tp,1,REASON_EFFECT)
 end
 function s.cfilter(c,tp)
-	return c:IsSetCard(0x21e1) and c:IsPreviousControler(tp) and c:GetPreviousLocation()==LOCATION_MZONE
+	return c:IsSetCard(0x21e1) and c:IsPreviousControler(tp) and c:IsPreviousLocation(LOCATION_MZONE)
 		and c:IsPreviousPosition(POS_FACEUP) and not c:IsAttribute(ATTRIBUTE_LIGHT)
 end
 function s.revcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.cfilter,1,nil,tp)
-		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
+	return eg and eg:IsExists(s.cfilter,1,nil,tp) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
 end
 function s.banfilter(c,e)
     return c:IsCode(5) and c:IsAbleToRemove()
