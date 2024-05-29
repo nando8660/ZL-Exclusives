@@ -133,16 +133,16 @@ function s.Ether_Aumenta(e,tp,eg,ep,ev,re,r,rp)
     end
 end
 function s.OverflowCon(e,tp,eg,ep,ev,re,r,rp)
-    return Duel.GetLP(0)>=15000 or Duel.GetLP(1)>=15000
+    return Duel.GetLP(0)>15000 or Duel.GetLP(1)>15000
 end
 function s.Derrota(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLP(0)>=15000 then Duel.Win(1,0x47) return end
-	if Duel.GetLP(1)>=15000 then Duel.Win(0,0x47) return end
+	if Duel.GetLP(0)>15000 then Duel.Win(1,0x47) return end
+	if Duel.GetLP(1)>15000 then Duel.Win(0,0x47) return end
 	Duel.Win(PLAYER_NONE, 0x47)
 end
 function s.VitoriaCon(e,tp,eg,ep,ev,re,r,rp)
-    return (Duel.GetLP(0)>=5000 and Duel.GetFlagEffectLabel(0, id)>=10000) 
-        or (Duel.GetLP(1)>=5000 and Duel.GetFlagEffectLabel(1, id)>=10000) 
+    return (Duel.GetLP(0)<=5000 and Duel.GetFlagEffectLabel(0, id)>=10000) 
+        or (Duel.GetLP(1)<=5000 and Duel.GetFlagEffectLabel(1, id)>=10000) 
 end
 function s.Vitoria(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLP(0)>=5000 and Duel.GetFlagEffectLabel(0, id)>=10000 then Duel.Win(1,0x46) return end
