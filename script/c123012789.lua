@@ -145,7 +145,7 @@ function s.VitoriaCon(e,tp,eg,ep,ev,re,r,rp)
         or (Duel.GetLP(1)<=5000 and Duel.GetFlagEffectLabel(1, id)>=10000) 
 end
 function s.Vitoria(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLP(0)>=5000 and Duel.GetFlagEffectLabel(0, id)>=10000 then Duel.Win(1,0x46) return end
-	if Duel.GetLP(1)>=5000 and Duel.GetFlagEffectLabel(1, id)>=10000 then Duel.Win(0,0x46) return end
+	if Duel.GetLP(0)<=5000 and Duel.GetFlagEffectLabel(0, id)>=10000 then Duel.Win(1,0x46) return end
+	if Duel.GetLP(1)<=5000 and Duel.GetFlagEffectLabel(1, id)>=10000 then Duel.Win(0,0x46) return end
 	Duel.Win(PLAYER_NONE, 0x46)
 end
