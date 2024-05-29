@@ -29,7 +29,7 @@ function s.initial_effect(c)
 	e4:SetCode(EFFECT_REVERSE_DAMAGE)
 	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e4:SetRange(LOCATION_MZONE)
-	e4:SetCondition(function (e,tp,eg,ev,ep,re,r,rp) return Duel.GetBattleDamage(tp)>0 end)
+	e4:SetCondition(function(e,tp,eg,ev,ep,re,r,rp) return Duel.GetBattleDamage(tp)>0 end)
 	e4:SetTargetRange(1,0)
 	e4:SetValue(s.rev)
 	c:RegisterEffect(e4)
@@ -98,11 +98,13 @@ function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 end
 -- SUMMON PROC (END)
 -- Batte Damage (Start)
-function s.dmgcond(e)
-	return Duel.GetAttacker()==e:GetHandler() or Duel.GetAttackTarget()==e:GetHandler()
+function s.dmgcond(e,tp)
+	return Duel.GetBattleDamage(tp)>0 and
+		(Duel.GetAttacker()==e:GetHandler() or Duel.GetAttackTarget()==e:GetHandler())
 end
 function s.rev(e,re,r,rp,rc)
-	return r&REASON_BATTLE~=0 and (Duel.GetAttacker()==e:GetHandler() or (Duel.GetAttackTarget() and Duel.GetAttackTarget()==e:GetHandler()))
+	return r&REASON_BATTLE~=0 and 
+		(Duel.GetAttacker()==e:GetHandler() or (Duel.GetAttackTarget() and Duel.GetAttackTarget()==e:GetHandler()))
 end
 -- Battle Damage (End)
 -- Special Summon and Negate (Start)
