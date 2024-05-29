@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.sprop)
 	e2:SetValue(SUMMON_TYPE_SYNCHRO)
 	c:RegisterEffect(e2)
-    -- you take the battle damage
+	-- you take the battle damage
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD)
 	e3:SetCode(EFFECT_REFLECT_BATTLE_DAMAGE)
@@ -23,7 +23,7 @@ function s.initial_effect(c)
 	e3:SetTargetRange(0,1)
 	e3:SetCondition(s.dmgcond)
 	c:RegisterEffect(e3)
-    --damage conversion
+	--damage conversion
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_FIELD)
 	e4:SetCode(EFFECT_REVERSE_DAMAGE)
@@ -32,7 +32,7 @@ function s.initial_effect(c)
 	e4:SetTargetRange(1,0)
 	e4:SetValue(s.rev)
 	c:RegisterEffect(e4)
-    -- battle indestructable
+	-- battle indestructable
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE)
 	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
@@ -133,7 +133,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if #g==0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local tc=g:Select(tp,1,1,nil):GetFirst()
-	if tc and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)~=0 then
+	if tc and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_ATTACK)~=0 then
 		local g2=Duel.GetMatchingGroup(s.disfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil,e,tp,tc:GetAttribute())
 		if #g2>0 and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
 			Duel.BreakEffect()
