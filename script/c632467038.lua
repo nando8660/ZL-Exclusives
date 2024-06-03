@@ -2,7 +2,7 @@
 -- Un-quietness Geton Guardian
 local s,id=GetID()
 function s.initial_effect(c)
-    -- Revive
+	-- Revive
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,1))
 	e1:SetCategory(CATEGORY_REMOVE+CATEGORY_LEAVE_GRAVE+CATEGORY_SPECIAL_SUMMON)
@@ -10,41 +10,39 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_PAY_LPCOST)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
 	e1:SetRange(LOCATION_GRAVE)
-    e1:SetCondition(function(_,tp,_,ep) return ep==tp end)
+	e1:SetCondition(function(_,tp,_,ep) return ep==tp and  end)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
-    local e0=e1:Clone()
-    e0:SetCode(EVENT_DAMAGE)
-    c:RegisterEffect(e0)
-    -- LP gain
-    local e2=Effect.CreateEffect(c)
+	local e0=e1:Clone()
+	e0:SetCode(EVENT_DAMAGE)
+	c:RegisterEffect(e0)
+	-- LP gain
+	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,2))
-    e2:SetCategory(CATEGORY_TOGRAVE+CATEGORY_SPECIAL_SUMMON)
-    e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
+	e2:SetCategory(CATEGORY_TOGRAVE+CATEGORY_SPECIAL_SUMMON)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
 	e2:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_SINGLE)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
-    e2:SetCondition(function(e) return e:GetHandler():IsPreviousLocation(LOCATION_DECK) end)
-    -- e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
-    -- e2:SetType(EFFECT_TYPE_IGNITION)
-    -- e2:SetRange(LOCATION_MZONE)
-    e2:SetCost(s.lpcost)
-    e2:SetTarget(s.lptg)
-    e2:SetOperation(s.lpop)
-    c:RegisterEffect(e2)
+	e2:SetCondition(function(e) return e:GetHandler():IsPreviousLocation(LOCATION_DECK) end)
+	e2:SetCost(s.lpcost)
+	e2:SetTarget(s.lptg)
+	e2:SetOperation(s.lpop)
+	c:RegisterEffect(e2)
 end
 function s.filter(c)
-    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and not c:IsAttribute(ATTRIBUTE_WATER)
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and not c:IsAttribute(ATTRIBUTE_WATER)
 end
 function s.tgfilter(c)
-    return c:IsType(TYPE_MONSTER) and not c:IsAttribute(ATTRIBUTE_WATER)
+	return c:IsType(TYPE_MONSTER) and not c:IsAttribute(ATTRIBUTE_WATER)
 end
 function s.banfilter(c,e)
-    return c:IsCode(4) and c:IsAbleToRemove()
+	return c:IsCode(id) and c:IsAbleToRemove()
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsFaceup() and chkc:IsLocation(LOCATION_MZONE) and s.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil) 
+		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
 end
@@ -60,11 +58,6 @@ function s.operation(e, tp, eg, ep, ev, re, r, rp)
 		e1:SetValue(LOCATION_REMOVED)
 		e1:SetReset(RESET_EVENT+RESETS_REDIRECT)
 		e:GetHandler():RegisterEffect(e1,true)
-		-- Place 1 card from hand/field on the top of your Deck
-		-- local td=Duel.SelectMatchingCard(tp,Card.IsAbleToDeckOrExtraAsCost,tp,LOCATION_HAND+LOCATION_ONFIELD,0,1,1,nil)
-		-- if #td>0 then
-		-- 	Duel.SendtoDeck(td,nil,SEQ_DECKTOP,REASON_EFFECT)
-		-- end
     end
 	Duel.SpecialSummonComplete()
 end
@@ -74,7 +67,7 @@ function s.spfilter(c,e,tp)
 end
 function s.lpcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,400) end
-    Duel.PayLPCost(tp,400)
+	Duel.PayLPCost(tp,400)
 end
 function s.lptg(e, tp, eg, ep, ev, re, r, rp, chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
