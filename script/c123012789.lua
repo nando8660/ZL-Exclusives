@@ -18,9 +18,9 @@ end
 function s.init(e, tp, eg, ep, ev, re, r, rp)
     local c=e:GetHandler()
     -- Registra no Client quem é p0
-    aux.RegisterClientHint(c, nil, 0, 1, 0, aux.Stringid(id, 0), nil)
+    aux.RegisterClientHint(c, nil, 0, 1, 0, aux.Stringid(id, 0), nil, 99999)
     -- Registra no Client quem é p1
-    aux.RegisterClientHint(c, nil, 1, 1, 0, aux.Stringid(id, 1), nil)
+    aux.RegisterClientHint(c, nil, 1, 1, 0, aux.Stringid(id, 1), nil, 99999)
 
     -- Conta quantos Ether Counter há no jogo
     if Duel.GetFlagEffectLabel(0, id)==nil and Duel.GetFlagEffectLabel(1, id)==nil then
