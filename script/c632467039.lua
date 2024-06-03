@@ -2,7 +2,7 @@
 -- Un-quietness Nightmare Tajy
 local s,id=GetID()
 function s.initial_effect(c)
-    -- revive 
+	-- revive 
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_REMOVE+CATEGORY_SEARCH+CATEGORY_TOHAND)
@@ -55,7 +55,7 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.bfilter(c)
-    return c:IsCode(3)
+	return c:IsCode(id) and c:IsAbleToRemove()
 end
 function s.spop(e, tp, eg, ep, ev, re, r, rp, chk)
     local g=Duel.GetMatchingGroup(s.bfilter, tp, LOCATION_GRAVE, 0, e:GetHandler(), e)
@@ -73,7 +73,7 @@ function s.spop(e, tp, eg, ep, ev, re, r, rp, chk)
 end
 function s.lpcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,1000) and Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,LOCATION_HAND,0,1,nil) end
-    Duel.PayLPCost(tp,1000)
+	Duel.PayLPCost(tp,1000)
 	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD,nil)
 end
 function s.lpfilter(c,tp)
@@ -88,13 +88,13 @@ function s.thfilter(c,tp)
 end
 function s.lpop(e, tp, eg, ep, ev, re, r, rp)
 	local e1=Effect.CreateEffect(e:GetHandler())
-    e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-    e1:SetCode(EVENT_SPSUMMON_SUCCESS)
-    e1:SetProperty(EFFECT_FLAG_DELAY)
-    e1:SetCondition(function(e, tp, eg, ep, ev, re, r, rp) return eg:IsExists(s.lpfilter, 1, nil, tp) end)
-    e1:SetOperation(function(e,tp) Duel.Recover(tp,600,REASON_EFFECT) end)
-    e1:SetReset(RESET_PHASE+PHASE_END, 2)
-    Duel.RegisterEffect(e1, tp)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e1:SetProperty(EFFECT_FLAG_DELAY)
+	e1:SetCondition(function(e, tp, eg, ep, ev, re, r, rp) return eg:IsExists(s.lpfilter, 1, nil, tp) end)
+	e1:SetOperation(function(e,tp) Duel.Recover(tp,600,REASON_EFFECT) end)
+	e1:SetReset(RESET_PHASE+PHASE_END, 2)
+	Duel.RegisterEffect(e1, tp)
 	if Duel.IsExistingMatchingCard(s.thfilter, tp, LOCATION_DECK, 0, 1, nil, tp)
 		and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
 		local th=Duel.SelectMatchingCard(tp, s.thfilter, tp, LOCATION_DECK, 0, 1, 1, nil, tp)
