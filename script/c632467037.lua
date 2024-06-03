@@ -2,15 +2,16 @@
 -- Un-quietness Shadow Anolis
 local s,id=GetID()
 function s.initial_effect(c)
-    local e1=Effect.CreateEffect(c)
-    e1:SetCategory(CATEGORY_SUMMON+CATEGORY_HANDES+CATEGORY_TOGRAVE)
-    e1:SetType(EFFECT_TYPE_IGNITION)
-    e1:SetRange(LOCATION_HAND)
-    e1:SetCost(s.sumcost)
-    e1:SetTarget(s.sumtg)
-    e1:SetOperation(s.sumop)
-    c:RegisterEffect(e1)
-    -- Revive
+	-- Normal summon 1 "Un-quietness" monster from hand
+	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_SUMMON+CATEGORY_HANDES+CATEGORY_TOGRAVE)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetCost(s.sumcost)
+	e1:SetTarget(s.sumtg)
+	e1:SetOperation(s.sumop)
+	c:RegisterEffect(e1)
+	-- Revive
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_REMOVE+CATEGORY_LEAVE_GRAVE+CATEGORY_SPECIAL_SUMMON)
@@ -40,12 +41,12 @@ function s.revivefilter(c)
     return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and not c:IsAttribute(ATTRIBUTE_DARK)
 end
 function s.banfilter(c,e)
-    return c:IsCode(7) and c:IsAbleToRemove()
+	return c:IsCode(id) and c:IsAbleToRemove()
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsFaceup() and chkc:IsLocation(LOCATION_MZONE) and s.revivefilter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.revivefilter,tp,LOCATION_MZONE,0,1,nil)
-        and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
+        	and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,s.revivefilter,tp,LOCATION_MZONE,0,1,1,nil)
 end
