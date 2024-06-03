@@ -1,14 +1,14 @@
 -- Enlightenment, the Singularity of Symbols
 local s,id=GetID()
 function s.initial_effect(c)
-    --Must be properly summoned before reviving
+	--Must be properly summoned before reviving
 	c:EnableReviveLimit()
 	--cannot special summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
-	e1:SetValue(aux.synlimit)
+	-- e1:SetValue(aux.synlimit)
 	c:RegisterEffect(e1)
 	--Special Summon procedure
 	local e2=Effect.CreateEffect(c)
@@ -38,16 +38,16 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 	-- ATK Decrease
 	local e5=Effect.CreateEffect(c)
-    e5:SetCategory(CATEGORY_RECOVER+CATEGORY_TODECK+CATEGORY_ATKCHANGE)
-    e5:SetType(EFFECT_TYPE_QUICK_O)
+	e5:SetCategory(CATEGORY_RECOVER+CATEGORY_TODECK+CATEGORY_ATKCHANGE)
+	e5:SetType(EFFECT_TYPE_QUICK_O)
 	e5:SetCode(EVENT_FREE_CHAIN)
 	e5:SetRange(LOCATION_MZONE)
 	e5:SetHintTiming(0,TIMINGS_CHECK_MONSTER+TIMING_MAIN_END)
-    e5:SetCountLimit(1)
-    e5:SetCost(s.atkcost)
-    e5:SetTarget(s.atktg)
-    e5:SetOperation(s.atkop)
-    c:RegisterEffect(e5)
+	e5:SetCountLimit(1)
+	e5:SetCost(s.atkcost)
+	e5:SetTarget(s.atktg)
+	e5:SetOperation(s.atkop)
+	c:RegisterEffect(e5)
 end
 -- SUMMON PROC (START)
 function s.sprfilter(c)
@@ -60,7 +60,7 @@ end
 function s.sprfilter2(c,tp,mc,sc,e)
 	local sg=Group.FromCards(c,mc)
 	local THIS_CARD_LEVEL=e:GetHandler():GetLevel()
-	return (math.abs((c:GetLevel()-mc:GetLevel()))==THIS_CARD_LEVEL) and not c:IsType(TYPE_TUNER) and Duel.GetLocationCountFromEx(tp,tp,sg,sc)>0
+	return (math.abs((c:GetLevel()-mc:GetLevel()))==THIS_CARD_LEVEL) and not c:IsType(TYPE_TUNER)-- and Duel.GetLocationCountFromEx(tp,tp,sg,sc)>0
 end
 function s.sprcon(e,c)
 	if c==nil then return true end
@@ -88,7 +88,7 @@ end
 function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=e:GetLabelObject()
 	if not g then return end
-    Duel.Release(g, REASON_COST)
+	Duel.Release(g, REASON_COST)
 end
 -- SUMMON PROC (END)
 function s.dmgcond(e)
@@ -100,39 +100,39 @@ end
 -- ATK DECREASE >>
 function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,500) end
-    Duel.PayLPCost(tp,500)
+	Duel.PayLPCost(tp,500)
 end
 function s.tdfilter(c)
-    return c:IsRace(RACE_ZOMBIE) and c:IsAbleToDeckAsCost()
+	return c:IsRace(RACE_ZOMBIE) and c:IsAbleToDeckAsCost()
 end
 function s.atktg(e, tp, eg, ep, ev, re, r, rp, chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, nil) 
-        and Duel.IsExistingMatchingCard(s.tdfilter, tp, LOCATION_REMOVED, 0, 1, nil) end
-    local g=Duel.SelectMatchingCard(tp, s.tdfilter, tp, LOCATION_REMOVED, 0, 1, 3, true, nil)
-    if #g>0 then 
-        Duel.SendtoDeck(g, tp, 2, REASON_COST)
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, nil) 
+		and Duel.IsExistingMatchingCard(s.tdfilter, tp, LOCATION_REMOVED, 0, 1, nil) end
+	local g=Duel.SelectMatchingCard(tp, s.tdfilter, tp, LOCATION_REMOVED, 0, 1, 3, true, nil)
+	if #g>0 then 
+		Duel.SendtoDeck(g, tp, 2, REASON_COST)
 	end
 end
 function s.atkop(e, tp, eg, ep, ev, re, r, rp)
-    local tg = Duel.GetMatchingGroup(Card.IsFaceup, tp, 0, LOCATION_MZONE, nil)
+	local tg = Duel.GetMatchingGroup(Card.IsFaceup, tp, 0, LOCATION_MZONE, nil)
 	if #tg==0 then return end
-    local atk_decrease = Duel.GetOperatedGroup():GetSum(Card.GetAttack)
-    local tc=Duel.SelectMatchingCard(tp, Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, 1, nil):GetFirst()
-    local tdg=Group.CreateGroup()
-    if tc then 
-        -- registes the ATK of the target before this effect
-        local preatk=tc:GetAttack()
-        -- reduce attack
-        local e1=Effect.CreateEffect(e:GetHandler()) 
+	local atk_decrease = Duel.GetOperatedGroup():GetSum(Card.GetAttack)
+	local tc=Duel.SelectMatchingCard(tp, Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, 1, nil):GetFirst()
+	local tdg=Group.CreateGroup()
+	if tc then 
+	        -- registes the ATK of the target before this effect
+	        local preatk=tc:GetAttack()
+	        -- reduce attack
+	        local e1=Effect.CreateEffect(e:GetHandler()) 
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(-atk_decrease)
 		e1:SetReset(RESET_EVENT|RESETS_STANDARD)
 		tc:RegisterEffect(e1)
-        if preatk~=0 and tc:GetAttack()==0 then tdg:AddCard(tc) end
-    end
+		if preatk~=0 and tc:GetAttack()==0 then tdg:AddCard(tc) end
+	end
 	if #tdg==0 then return end
-    Duel.BreakEffect()
-    if Duel.SendtoDeck(tdg, nil, 2, REASON_EFFECT) then Duel.Recover(tp, 1000, REASON_EFFECT) end
+	Duel.BreakEffect()
+	if Duel.SendtoDeck(tdg, nil, 2, REASON_EFFECT) then Duel.Recover(tp, 1000, REASON_EFFECT) end
 end
