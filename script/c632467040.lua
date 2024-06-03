@@ -8,7 +8,7 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
-	e1:SetValue(aux.synlimit)
+	-- e1:SetValue(aux.synlimit)
 	c:RegisterEffect(e1)
 	--Special Summon procedure
 	local e2=Effect.CreateEffect(c)
@@ -22,13 +22,13 @@ function s.initial_effect(c)
 	e2:SetValue(SUMMON_TYPE_SYNCHRO)
 	c:RegisterEffect(e2)
 	-- Gain LP instead of inflicting battle damage
-    local e3=Effect.CreateEffect(c)
-    e3:SetCategory(CATEGORY_RECOVER)
-    e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-    e3:SetCode(EVENT_PRE_BATTLE_DAMAGE)
-    e3:SetRange(LOCATION_MZONE)
-    e3:SetOperation(s.reop)
-    c:RegisterEffect(e3)
+	local e3=Effect.CreateEffect(c)
+	e3:SetCategory(CATEGORY_RECOVER)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e3:SetCode(EVENT_PRE_BATTLE_DAMAGE)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetOperation(s.reop)
+	c:RegisterEffect(e3)
 	-- battle indestructable
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE)
@@ -62,7 +62,7 @@ end
 function s.sprfilter2(c,tp,mc,sc,e)
 	local sg=Group.FromCards(c,mc)
 	local THIS_CARD_LEVEL=e:GetHandler():GetLevel()
-	return (math.abs((c:GetLevel()-mc:GetLevel()))==THIS_CARD_LEVEL) and not c:IsType(TYPE_TUNER) and Duel.GetLocationCountFromEx(tp,tp,sg,sc)>0
+	return (math.abs((c:GetLevel()-mc:GetLevel()))==THIS_CARD_LEVEL) and not c:IsType(TYPE_TUNER)-- and Duel.GetLocationCountFromEx(tp,tp,sg,sc)>0
 end
 function s.sprcon(e,c)
 	if c==nil then return true end
@@ -90,18 +90,18 @@ end
 function s.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=e:GetLabelObject()
 	if not g then return end
-    Duel.Release(g, REASON_COST)
+	Duel.Release(g, REASON_COST)
 end
 -- SUMMON PROC (END)
 -- Batte Damage (Start)
 function s.reop(e,tp,eg,ep,ev,re,r,rp)
-    if ep~=tp and Duel.Recover(tp, ev, REASON_EFFECT) then Duel.ChangeBattleDamage(1-tp, 0) end
+	if ep~=tp and Duel.Recover(tp, ev, REASON_EFFECT) then Duel.ChangeBattleDamage(1-tp, 0) end
 end
 -- Battle Damage (End)
 -- Special Summon and Negate (Start)
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,800) end
-    Duel.PayLPCost(tp,800)
+	Duel.PayLPCost(tp,800)
 end
 function s.spfilter(c,e,tp)
 	return c:IsMonster() and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
