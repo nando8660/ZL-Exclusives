@@ -2,15 +2,15 @@
 -- Un-quietness Everstray
 local s,id=GetID()
 function s.initial_effect(c)
-    -- if sent to the GY
-    local e1=Effect.CreateEffect(c)
+	-- if sent to the GY
+	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,1))
 	e1:SetCategory(CATEGORY_REMOVE+CATEGORY_RECOVER)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetProperty(EFFECT_FLAG_DELAY)
 	e1:SetCode(EVENT_TO_GRAVE)
 	e1:SetCondition(function(e) return e:GetHandler():IsPreviousLocation(LOCATION_DECK) end)
-    e1:SetCost(s.cost)
+	e1:SetCost(s.cost)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
@@ -77,21 +77,21 @@ end
 function s.target1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsFaceup() and chkc:IsLocation(LOCATION_MZONE) and s.filter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil) 
-        and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
+		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
 end
 function s.selffilter(c,e)
-    return c:IsCode(2) and c:IsAbleToRemove()
+	return c:IsCode(id) and c:IsAbleToRemove()
 end
 function s.banfilter2(c,e)
-    return c:IsType(TYPE_TUNER) and c:IsAbleToRemove()
+	return c:IsType(TYPE_TUNER) and c:IsAbleToRemove()
 end
 function s.operation1(e, tp, eg, ep, ev, re, r, rp)
-    local g=Duel.GetMatchingGroup(s.selffilter, tp, LOCATION_GRAVE, 0, e:GetHandler())
-    Duel.Remove(g, POS_FACEUP, REASON_EFFECT)
-    if e:GetHandler():IsLocation(LOCATION_GRAVE) and Duel.SpecialSummon(e:GetHandler(), 0, tp, tp, false, false, POS_FACEUP) then
-        local e1=Effect.CreateEffect(e:GetHandler())
+	local g=Duel.GetMatchingGroup(s.selffilter, tp, LOCATION_GRAVE, 0, e:GetHandler())
+	Duel.Remove(g, POS_FACEUP, REASON_EFFECT)
+	if e:GetHandler():IsLocation(LOCATION_GRAVE) and Duel.SpecialSummon(e:GetHandler(), 0, tp, tp, false, false, POS_FACEUP) then
+		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetDescription(3300)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_CLIENT_HINT)
@@ -103,5 +103,5 @@ function s.operation1(e, tp, eg, ep, ev, re, r, rp)
 		if #tuners>0 then
 			Duel.Remove(tuners, POS_FACEDOWN, REASON_EFFECT)
 		end
-    end
+	end
 end
