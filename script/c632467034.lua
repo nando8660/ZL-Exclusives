@@ -27,7 +27,7 @@ function s.initial_effect(c)
 
 end
 function s.costfilter(c)
-    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and c:IsFaceup() and c:IsAbleToGraveAsCost() and not c:IsAttribute(ATTRIBUTE_WIND)
+    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and c:IsAbleToGraveAsCost() and not c:IsAttribute(ATTRIBUTE_WIND)
 end
 function s.banfilter(c)
     return c:IsType(TYPE_MONSTER) and c:IsRace(RACE_ZOMBIE) and c:IsAbleToRemove() and c:IsFaceup()
