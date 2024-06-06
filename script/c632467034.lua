@@ -88,6 +88,7 @@ function s.banfilter2(c,e)
 	return c:IsType(TYPE_TUNER) and c:IsAbleToRemove()
 end
 function s.operation1(e, tp, eg, ep, ev, re, r, rp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 	local g=Duel.GetMatchingGroup(s.selffilter, tp, LOCATION_GRAVE, 0, e:GetHandler())
 	Duel.Remove(g, POS_FACEUP, REASON_EFFECT)
 	if e:GetHandler():IsLocation(LOCATION_GRAVE) and Duel.SpecialSummon(e:GetHandler(), 0, tp, tp, false, false, POS_FACEUP) then
