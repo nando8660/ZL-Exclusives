@@ -30,7 +30,8 @@ function s.costfilter(c)
     return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and c:IsAbleToGraveAsCost() and not c:IsAttribute(ATTRIBUTE_WIND)
 end
 function s.banfilter(c)
-    return c:IsType(TYPE_MONSTER) and c:IsRace(RACE_ZOMBIE) and c:IsAbleToRemove() and c:IsFaceup()
+    return c:IsType(TYPE_MONSTER) and c:IsRace(RACE_ZOMBIE) and c:IsAbleToRemove() 
+		and (c:IsFaceup() or c:IsLocation(LOCATION_HAND))
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,500) and Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_DECK,0,1,nil) end
