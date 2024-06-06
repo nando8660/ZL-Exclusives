@@ -27,14 +27,14 @@ function s.initial_effect(c)
 
 end
 function s.costfilter(c)
-    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and c:IsAbleToGraveAsCost() and not c:IsAttribute(ATTRIBUTE_WIND)
+    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and c:IsFaceup() and c:IsAbleToGraveAsCost() and not c:IsAttribute(ATTRIBUTE_WIND)
 end
 function s.banfilter(c)
-    return c:IsType(TYPE_MONSTER) and c:IsRace(RACE_ZOMBIE) and c:IsAbleToRemove()
+    return c:IsType(TYPE_MONSTER) and c:IsRace(RACE_ZOMBIE) and c:IsAbleToRemove() and c:IsFaceup()
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,500) and Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_DECK,0,1,nil) end
-    Duel.PayLPCost(tp,500)
+	Duel.PayLPCost(tp,500)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_DECK,0,1,1,nil)
 	Duel.SendtoGrave(g,REASON_COST)
@@ -53,7 +53,7 @@ function s.operation(e, tp, eg, ep, ev, re, r, rp)
         local e1=Effect.CreateEffect(e:GetHandler())
         e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
         e1:SetCode(EVENT_SPSUMMON_SUCCESS)
-		-- e1:SetCategory(CATEGORY_RECOVER)
+	-- e1:SetCategory(CATEGORY_RECOVER)
         e1:SetCondition(function(e,tp) return e:GetHandler():IsControler(tp) end)
         e1:SetTarget(s.lptg)
         e1:SetOperation(s.lpop)
@@ -72,7 +72,7 @@ function s.lpop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Recover(p,d,REASON_EFFECT)
 end
 function s.filter(c)
-    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and not c:IsAttribute(ATTRIBUTE_WIND)
+    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and c:IsFaceup() and not c:IsAttribute(ATTRIBUTE_WIND)
 end
 function s.target1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsFaceup() and chkc:IsLocation(LOCATION_MZONE) and s.filter(chkc) end
@@ -82,10 +82,10 @@ function s.target1(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
 end
 function s.selffilter(c,e)
-	return c:IsCode(id) and c:IsAbleToRemove()
+	return c:IsCode(id) and c:IsAbleToRemove() and c:IsFaceup()
 end
 function s.banfilter2(c,e)
-	return c:IsType(TYPE_TUNER) and c:IsAbleToRemove()
+	return c:IsType(TYPE_TUNER) and c:IsAbleToRemove() and c:IsFaceup()
 end
 function s.operation1(e, tp, eg, ep, ev, re, r, rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
