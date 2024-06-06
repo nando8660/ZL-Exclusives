@@ -99,5 +99,7 @@ function s.lpop(e, tp, eg, ep, ev, re, r, rp)
 		and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
 		local th=Duel.SelectMatchingCard(tp, s.thfilter, tp, LOCATION_DECK, 0, 1, 1, nil, tp)
 		Duel.SendtoHand(th, tp, REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,th)
+		Duel.ShuffleHand(tp)
 	end
 end
