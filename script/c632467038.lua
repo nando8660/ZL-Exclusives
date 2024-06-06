@@ -31,13 +31,13 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.filter(c)
-	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and not c:IsAttribute(ATTRIBUTE_WATER)
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and c:IsFaceup() and not c:IsAttribute(ATTRIBUTE_WATER)
 end
 function s.tgfilter(c)
 	return c:IsType(TYPE_MONSTER) and not c:IsAttribute(ATTRIBUTE_WATER)
 end
 function s.banfilter(c,e)
-	return c:IsCode(id) and c:IsAbleToRemove()
+	return c:IsCode(id) and c:IsFaceup() and c:IsAbleToRemove()
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsFaceup() and chkc:IsLocation(LOCATION_MZONE) and s.filter(chkc) end
