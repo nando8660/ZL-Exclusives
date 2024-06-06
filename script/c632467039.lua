@@ -55,7 +55,7 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.bfilter(c)
-	return c:IsCode(id) and c:IsAbleToRemove()
+	return c:IsCode(id) and c:IsFaceup() and c:IsAbleToRemove()
 end
 function s.spop(e, tp, eg, ep, ev, re, r, rp, chk)
     local g=Duel.GetMatchingGroup(s.bfilter, tp, LOCATION_GRAVE, 0, e:GetHandler(), e)
