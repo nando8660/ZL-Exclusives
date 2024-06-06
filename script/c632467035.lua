@@ -64,10 +64,10 @@ function s.spfilter(c,e,tp)
     return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.filter(c)
-    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and not c:IsAttribute(ATTRIBUTE_FIRE)
+    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x21e1) and c:IsFaceup() and not c:IsAttribute(ATTRIBUTE_FIRE)
 end
 function s.banfilter(c,e)
-    return c:IsCode(1) and c:IsAbleToRemove()
+    return c:IsCode(id) and c:IsFaceup() and c:IsAbleToRemove()
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
