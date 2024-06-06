@@ -73,7 +73,7 @@ function s.revcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg and eg:IsExists(s.cfilter,1,nil,tp) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
 end
 function s.banfilter(c,e)
-	return c:IsCode(id) and c:IsAbleToRemove()
+	return c:IsCode(id) and c:IsFaceup() and c:IsAbleToRemove()
 end
 function s.revoperation(e, tp, eg, ep, ev, re, r, rp)
 	local g=Duel.GetMatchingGroup(s.banfilter, tp, LOCATION_GRAVE, 0, e:GetHandler())
