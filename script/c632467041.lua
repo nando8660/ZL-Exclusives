@@ -111,12 +111,14 @@ function s.atktg(e, tp, eg, ep, ev, re, r, rp, chk)
 	local g=Duel.SelectMatchingCard(tp, s.tdfilter, tp, LOCATION_REMOVED, 0, 1, 3, true, nil)
 	if #g>0 then 
 		Duel.SendtoDeck(g, tp, 2, REASON_COST)
+		total_atk = Duel.GetOperatedGroup():GetSum(Card.GetAttack)
+		e:SetLabel(total_atk)
 	end
 end
 function s.atkop(e, tp, eg, ep, ev, re, r, rp)
 	local tg = Duel.GetMatchingGroup(Card.IsFaceup, tp, 0, LOCATION_MZONE, nil)
 	if #tg==0 then return end
-	local atk_decrease = Duel.GetOperatedGroup():GetSum(Card.GetAttack)
+	local atk_decrease = e:GetLabel()
 	local tc=Duel.SelectMatchingCard(tp, Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, 1, nil):GetFirst()
 	local tdg=Group.CreateGroup()
 	if tc then 
@@ -132,7 +134,7 @@ function s.atkop(e, tp, eg, ep, ev, re, r, rp)
 		tc:RegisterEffect(e1)
 		if preatk~=0 and tc:GetAttack()==0 then tdg:AddCard(tc) end
 	end
-	if #tdg==0 then return end
+	if #tdg<1 then return end
 	Duel.BreakEffect()
 	if Duel.SendtoDeck(tdg, nil, 2, REASON_EFFECT) then Duel.Recover(tp, 1000, REASON_EFFECT) end
 end
