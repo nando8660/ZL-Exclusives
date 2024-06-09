@@ -63,7 +63,7 @@ function s.operation(e, tp, eg, ep, ev, re, r, rp)
 		e1:SetReset(RESET_EVENT+RESETS_REDIRECT)
 		e:GetHandler():RegisterEffect(e1,true)
         Duel.BreakEffect()
-        local num=Duel.GetMatchingGroup(Card.IsFaceup,0,LOCATION_MZONE,LOCATION_MZONE,nil):GetBinClassCount(Card.GetAttribute)
+        local num=Duel.GetMatchingGroup(Card.IsFaceup, tp, LOCATION_MZONE, 0,nil):GetBinClassCount(Card.GetAttribute)
         if num>3 then
             if Duel.Recover(tp, 800, REASON_EFFECT) then
                 Duel.Draw(tp, 1, REASON_EFFECT)
