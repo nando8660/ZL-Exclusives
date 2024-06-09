@@ -63,6 +63,7 @@ function s.drcon(e,tp,eg,ep,ev,re,r,rp)
 	return false
 end
 function s.drop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,0,id)
 	Duel.Draw(tp,1,REASON_EFFECT)
 end
 function s.cfilter(c,tp)
