@@ -133,7 +133,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.BreakEffect()
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_NEGATE)
 			local tc2=g2:Select(tp,1,1,nil):GetFirst()
-			if tc2 then
+			if tc2 and tc2:IsCanBeDisabledByEffect(e) then
 				-- Negate its effects
 				local e1=Effect.CreateEffect(c)
 				e1:SetType(EFFECT_TYPE_SINGLE)
